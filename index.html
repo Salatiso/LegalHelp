@@ -20,8 +20,8 @@
                     <i class="fas fa-hands-helping text-indigo-400"></i> Legal<span class="text-indigo-400">Help</span>
                 </div>
                 <div class="space-x-4">
-                    <a href="#about" class="hover:text-white tab-btn" data-target="tab-about">About</a>
-                    <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Login</a>
+                    <a href="#about" class="hover:text-white" id="about-link">About</a>
+                    <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Login / Register</a>
                 </div>
             </nav>
         </header>
@@ -32,7 +32,7 @@
                 <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4">The Law, Demystified.</h1>
                 <p class="text-xl text-indigo-200 mb-8 max-w-3xl mx-auto">Your comprehensive and accessible archive of South African and comparative international law.</p>
                 <div class="max-w-2xl mx-auto relative">
-                    <input type="text" id="search-bar" placeholder="Search for an Act, Case Law, or Regulation..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 border-2 border-transparent focus:outline-none focus:border-indigo-400">
+                    <input type="text" id="search-bar" placeholder="Search across all legal categories..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 border-2 border-transparent focus:outline-none focus:border-indigo-400">
                     <button id="search-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center"><i class="fas fa-search text-xl"></i></button>
                 </div>
             </div>
@@ -41,12 +41,12 @@
         <!-- Tabs Navigation -->
         <div class="bg-gray-800 border-b-2 border-gray-700">
             <div id="tabs-container" class="container mx-auto flex justify-center flex-wrap">
-                <button class="tab-btn active p-4 font-semibold" data-target="tab-constitution">The Constitution</button>
-                <button class="tab-btn p-4 font-semibold" data-target="tab-statutes">Statutes & Acts</button>
-                <button class="tab-btn p-4 font-semibold" data-target="tab-caselaw">Case Law</button>
-                <button class="tab-btn p-4 font-semibold" data-target="tab-traditional">Traditional Law</button>
-                <button class="tab-btn p-4 font-semibold" data-target="tab-international">International Law</button>
-                <button class="tab-btn p-4 font-semibold" data-target="tab-bills">Bills & Gazettes</button>
+                <button class="tab-btn active p-4 font-semibold" data-target="constitution">The Constitution</button>
+                <button class="tab-btn p-4 font-semibold" data-target="national-legislation">National Legislation</button>
+                <button class="tab-btn p-4 font-semibold" data-target="case-law">Case Law</button>
+                <button class="tab-btn p-4 font-semibold" data-target="traditional-law">Traditional Law</button>
+                <button class="tab-btn p-4 font-semibold" data-target="international-law">International Law</button>
+                <button class="tab-btn p-4 font-semibold" data-target="bills-gazettes">Bills & Gazettes</button>
             </div>
         </div>
 
@@ -100,6 +100,13 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
+.content-card h3 {
+    color: #c7d2fe;
+}
+.search-highlight {
+    background-color: #fef08a;
+    color: #713f12;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -107,34 +114,47 @@ body {
 }
 ```javascript
 // assets/js/main.js
-import { statutes } from './data_statutes.js';
-import { caseLaw } from './data_case-law.js';
-import { traditionalLaw } from './data_traditional.js';
-import { internationalLaw } from './data_international.js';
-import { bills } from './data_bills.js';
+import { constitution } from './data/national-legislation.js';
+import { acts } from './data/national-legislation.js';
+import { provincial } from './data/provincial-local-legislation.js';
+import { caseLaw } from './data/case-law.js';
+import { traditionalLaw } from './data/traditional-law.js';
+import { internationalLaw } from './data/international-law.js';
+import { bills } from './data/bills-gazettes.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const tabsContainer = document.getElementById('tabs-container');
     const contentArea = document.getElementById('tab-content-area');
+    const searchBar = document.getElementById('search-bar');
+    const searchBtn = document.getElementById('search-btn');
 
-    const contentMap = {
-        'tab-constitution': statutes.constitution,
-        'tab-statutes': statutes.acts,
-        'tab-caselaw': caseLaw,
-        'tab-traditional': traditionalLaw,
-        'tab-international': internationalLaw,
-        'tab-bills': bills
+    const allData = {
+        'constitution': constitution,
+        'national-legislation': acts,
+        'provincial-local': provincial,
+        'case-law': caseLaw,
+        'traditional-law': traditionalLaw,
+        'international-law': internationalLaw,
+        'bills-gazettes': bills
     };
 
-    function renderContent(targetId) {
-        const data = contentMap[targetId];
-        let html = `<div id="${targetId}" class="tab-content active space-y-4">`;
+    function renderContent(data, highlightTerm = '') {
+        let html = `<div class="space-y-4">`;
         
         data.forEach(item => {
+            let title = item.title;
+            let summary = item.summary;
+            
+            if (highlightTerm) {
+                const regex = new RegExp(highlightTerm, 'gi');
+                title = title.replace(regex, `<span class="search-highlight">${highlightTerm}</span>`);
+                summary = summary.replace(regex, `<span class="search-highlight">${highlightTerm}</span>`);
+            }
+
             html += `
                 <div class="content-card p-6 rounded-lg">
-                    <h3 class="text-xl font-bold font-roboto-slab text-white mb-2">${item.title}</h3>
-                    <p class="text-gray-400">${item.summary}</p>
+                    <h3 class="text-xl font-bold font-roboto-slab mb-2">${title}</h3>
+                    <p class="text-gray-400">${summary}</p>
                 </div>
             `;
         });
@@ -143,53 +163,94 @@ document.addEventListener('DOMContentLoaded', () => {
         contentArea.innerHTML = html;
     }
 
-    tabsContainer.addEventListener('click', e => {
+    function setActiveTab(targetId) {
+        const currentActive = tabsContainer.querySelector('.active');
+        if (currentActive) {
+            currentActive.classList.remove('active');
+        }
+        const newActiveBtn = tabsContainer.querySelector(`[data-target="${targetId}"]`);
+        if (newActiveBtn) {
+            newActiveBtn.classList.add('active');
+        }
+    }
+
+    function handleTabClick(e) {
         if (e.target.classList.contains('tab-btn')) {
-            const currentActive = tabsContainer.querySelector('.active');
-            if (currentActive) {
-                currentActive.classList.remove('active');
-            }
-            e.target.classList.add('active');
-            renderContent(e.target.dataset.target);
+            const targetId = e.target.dataset.target;
+            setActiveTab(targetId);
+            renderContent(allData[targetId] || []);
+        }
+    }
+
+    function handleSearch() {
+        const query = searchBar.value.trim().toLowerCase();
+        if (!query) {
+             // If search is empty, show the currently active tab's content
+            const activeTab = tabsContainer.querySelector('.active')?.dataset.target || 'constitution';
+            renderContent(allData[activeTab]);
+            return;
+        }
+
+        const allContent = Object.values(allData).flat();
+        const results = allContent.filter(item => 
+            item.title.toLowerCase().includes(query) || 
+            item.summary.toLowerCase().includes(query)
+        );
+        
+        tabsContainer.querySelector('.active')?.classList.remove('active');
+        renderContent(results, searchBar.value.trim());
+    }
+
+    tabsContainer.addEventListener('click', handleTabClick);
+    searchBtn.addEventListener('click', handleSearch);
+    searchBar.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
         }
     });
 
     // Initial render
-    renderContent('tab-constitution');
+    renderContent(allData['constitution']);
 });
 ```javascript
-// assets/js/data_statutes.js
-export const statutes = {
-    constitution: [
-        { title: "Chapter 1: Founding Provisions", summary: "Defines South Africa as one, sovereign, democratic state founded on the values of human dignity, equality, and the supremacy of the Constitution." },
-        { title: "Chapter 2: Bill of Rights", summary: "The cornerstone of democracy in South Africa. It enshrines the rights of all people in our country and affirms the democratic values of human dignity, equality and freedom." }
-    ],
-    acts: [
-        { title: "Children's Act 38 of 2005", summary: "Governs the rights and responsibilities of parents and the paramountcy of the child's best interests." },
-        { title: "Promotion of Access to Information Act 2 of 2000 (PAIA)", summary: "Gives effect to the constitutional right of access to any information held by the State and any information that is held by another person and that is required for the exercise or protection of any rights." }
-    ]
-};
+// assets/js/data/national-legislation.js
+export const constitution = [
+    { title: "Chapter 1: Founding Provisions", summary: "Defines South Africa as one, sovereign, democratic state founded on the values of human dignity, equality, and the supremacy of the Constitution." },
+    { title: "Chapter 2: Bill of Rights", summary: "The cornerstone of democracy in South Africa. It enshrines the rights of all people in our country and affirms the democratic values of human dignity, equality and freedom." }
+];
+
+export const acts = [
+    { title: "Children's Act 38 of 2005", summary: "Governs the rights and responsibilities of parents and the paramountcy of the child's best interests." },
+    { title: "Occupational Health and Safety Act 85 of 1993", summary: "To provide for the health and safety of persons at work and for the health and safety of persons in connection with the use of plant and machinery." },
+    { title: "Promotion of Access to Information Act 2 of 2000 (PAIA)", summary: "Gives effect to the constitutional right of access to any information held by the State and any information that is held by another person and that is required for the exercise or protection of any rights." }
+];
 ```javascript
-// assets/js/data_case-law.js
+// assets/js/data/provincial-local-legislation.js
+export const provincial = [
+    { title: "Gauteng Provincial School Education Act, 1995", summary: "Provides for a uniform system for the organization, governance and funding of schools and education in the Gauteng Province." },
+    { title: "City of Johannesburg Metropolitan Municipality: Public Health By-laws", summary: "Regulates matters that have a bearing on the health of the public within the jurisdiction of the City of Johannesburg." }
+];
+```javascript
+// assets/js/data/case-law.js
 export const caseLaw = [
-    { title: "S v Makwanyane and Another (1995)", summary: "The landmark Constitutional Court case that abolished the death penalty in South Africa." },
-    { title: "Fraser v Children's Court, Pretoria North and Others (1997)", summary: "A key case that dealt with the rights of unmarried fathers, significantly influencing the drafting of the Children's Act." }
+    { title: "S v Makwanyane and Another (1995)", summary: "The landmark Constitutional Court case that abolished the death penalty in South Africa, finding it to be inconsistent with the rights to life and dignity." },
+    { title: "Fraser v Children's Court, Pretoria North and Others (1997)", summary: "A key case that dealt with the rights of unmarried fathers, finding that parts of the Child Care Act unfairly discriminated against them on the basis of sex and marital status." }
 ];
 ```javascript
-// assets/js/data_traditional.js
+// assets/js/data/traditional-law.js
 export const traditionalLaw = [
-    { title: "Ukuthwala", summary: "A customary practice of marriage, which has become controversial due to its exploitation for forced child marriages, contrary to its original intent." },
-    { title: "Lobola", summary: "The custom of bride wealth, involving the transfer of cattle or other valuables from the groom's family to the bride's. It is a unifying practice between families, not a purchase." }
+    { title: "Ukuthwala", summary: "A customary practice of marriage, which has become controversial due to its exploitation for forced child marriages, contrary to its original intent. Courts have intervened to protect children from this distortion of custom." },
+    { title: "Lobola (Bride Wealth)", summary: "The custom involving the transfer of cattle or other valuables from the groom's family to the bride's. It is a unifying practice between families and a symbol of commitment, not a 'purchase' of a wife. Its compatibility with gender equality principles is a subject of ongoing debate." }
 ];
 ```javascript
-// assets/js/data_international.js
+// assets/js/data/international-law.js
 export const internationalLaw = [
-    { title: "The Jury System (USA)", summary: "A system where guilt is determined by a panel of ordinary citizens. South Africa uses a system where a judge or magistrate determines the outcome, sometimes with assessors." },
-    { title: "Affirmative Action (USA)", summary: "Policies designed to counteract historical discrimination, primarily in employment and education. This provided a comparative framework for South Africa's Broad-Based Black Economic Empowerment (B-BBEE) policies." }
+    { title: "The Jury System (United States)", summary: "A system where guilt in serious criminal trials is determined by a panel of ordinary citizens. South Africa uses a system where a judge or magistrate determines the outcome, sometimes with assessors for serious cases. The jury system is often debated for its perceived fairness versus its susceptibility to bias." },
+    { title: "Affirmative Action (United States)", summary: "Policies designed to counteract historical discrimination in employment and education. This provided a comparative framework for South Africa's Broad-Based Black Economic Empowerment (B-BBEE) policies, though the legal and social contexts differ significantly." }
 ];
 ```javascript
-// assets/js/data_bills.js
+// assets/js/data/bills-gazettes.js
 export const bills = [
-    { title: "Draft Basic Education Laws Amendment (BELA) Bill", summary: "A recent and controversial bill seeking to amend laws around school admission policies, language policies, and homeschooling regulation." },
+    { title: "Draft Basic Education Laws Amendment (BELA) Bill", summary: "A recent and controversial bill seeking to amend laws around school admission policies, language policies, and homeschooling regulation, sparking debate on the extent of state control versus school governing body autonomy." },
     { title: "Government Gazette No. 49615 (2023)", summary: "Contains recent notices regarding national minimum wage adjustments and sector-specific determinations." }
 ];
