@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalHelp - Resource Locator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-gray-900 text-gray-200">
+    <div id="header-placeholder"></div>
+    <main class="main-content pt-24 pb-12 px-4 md:px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold font-roboto-slab mb-2 text-white text-center">Resource Directory</h2>
+            <p class="text-lg text-gray-400 mb-8 text-center">A directory of courts, commissions, and support services in South Africa.</p>
+            
+            <div id="manual-directory" class="mt-12">
+                <h3 class="text-2xl font-bold text-indigo-400 mb-6 text-center">Browse the Directory</h3>
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/resources.js"></script>
+</body>
+</html>
