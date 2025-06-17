@@ -1,256 +1,94 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LegalHelp - South African Law, Demystified</title>
+    <title>LegalHelp South Africa - The Law, Demystified</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-gray-900 text-gray-300">
+<body>
 
-    <div class="h-screen flex flex-col">
-        <!-- Header -->
-        <header class="bg-gray-900 shadow-md">
-            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="text-2xl font-bold font-roboto-slab text-white">
-                    <i class="fas fa-hands-helping text-indigo-400"></i> Legal<span class="text-indigo-400">Help</span>
+    <div id="header-placeholder"></div>
+
+    <div class="app-shell">
+        <div id="mainContainer" class="main-container">
+            <!-- Section 1: Home -->
+            <section class="section hero-gradient text-white">
+                <div class="text-center max-w-4xl">
+                    <i class="fas fa-balance-scale text-6xl text-indigo-200 mb-6"></i>
+                    <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4" data-translate-key="home.title">The Law, Demystified.</h1>
+                    <p class="text-xl text-indigo-200 mb-8" data-translate-key="home.subtitle">Your comprehensive, single-view archive of South African legislation.</p>
+                    <div class="relative max-w-xl mx-auto">
+                        <input type="search" placeholder="Search any Act, case, or section..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition" data-translate-key="home.search_placeholder" placeholder-key="home.search_placeholder">
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center"><i class="fas fa-search text-xl"></i></button>
+                    </div>
+                     <p class="mt-8 text-indigo-200" data-translate-key="home.swipe_prompt">Use navigation or swipe to explore</p>
                 </div>
-                <div class="space-x-4">
-                    <a href="#about" class="hover:text-white" id="about-link">About</a>
-                    <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Login / Register</a>
+            </section>
+
+            <!-- Section 2: The Constitution -->
+            <section class="section">
+                <div class="text-center max-w-4xl">
+                    <i class="fas fa-landmark text-6xl text-green-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="constitution.title">The Constitution</h2>
+                    <p class="text-lg text-gray-400 mb-6" data-translate-key="constitution.subtitle">The supreme law of the Republic. The foundation of our democracy and the ultimate source of all law. Explore the Bill of Rights, the structure of the state, and landmark Constitutional Court cases that have shaped our nation.</p>
+                    <a href="forms.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors" data-translate-key="constitution.cta">View Related Forms</a>
                 </div>
-            </nav>
-        </header>
+            </section>
 
-        <!-- Hero Section -->
-        <div class="hero-gradient text-white text-center py-16">
-            <div class="container mx-auto px-6">
-                <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4">The Law, Demystified.</h1>
-                <p class="text-xl text-indigo-200 mb-8 max-w-3xl mx-auto">Your comprehensive and accessible archive of South African and comparative international law.</p>
-                <div class="max-w-2xl mx-auto relative">
-                    <input type="text" id="search-bar" placeholder="Search across all legal categories..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 border-2 border-transparent focus:outline-none focus:border-indigo-400">
-                    <button id="search-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center"><i class="fas fa-search text-xl"></i></button>
+            <!-- Section 3: Statutes & Acts -->
+            <section class="section">
+                <div class="text-center max-w-4xl">
+                     <i class="fas fa-scroll text-6xl text-blue-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="statutes.title">Statutes & Acts</h2>
+                    <p class="text-lg text-gray-400" data-translate-key="statutes.subtitle">Access a comprehensive database of laws passed by Parliament. The full text of all national acts will be searchable, categorized, and linked to relevant amendments and regulations for easy reference.</p>
                 </div>
-            </div>
-        </div>
-
-        <!-- Tabs Navigation -->
-        <div class="bg-gray-800 border-b-2 border-gray-700">
-            <div id="tabs-container" class="container mx-auto flex justify-center flex-wrap">
-                <button class="tab-btn active p-4 font-semibold" data-target="constitution">The Constitution</button>
-                <button class="tab-btn p-4 font-semibold" data-target="national-legislation">National Legislation</button>
-                <button class="tab-btn p-4 font-semibold" data-target="case-law">Case Law</button>
-                <button class="tab-btn p-4 font-semibold" data-target="traditional-law">Traditional Law</button>
-                <button class="tab-btn p-4 font-semibold" data-target="international-law">International Law</button>
-                <button class="tab-btn p-4 font-semibold" data-target="bills-gazettes">Bills & Gazettes</button>
-            </div>
-        </div>
-
-        <!-- Tab Content Area -->
-        <div id="tab-content-area" class="flex-grow container mx-auto p-8 overflow-y-auto">
-            <!-- Content will be injected by main.js -->
+            </section>
+            
+            <!-- Section 4: Case Law -->
+            <section class="section">
+                <div class="text-center max-w-4xl">
+                    <i class="fas fa-gavel text-6xl text-yellow-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="caselaw.title">Case Law</h2>
+                    <p class="text-lg text-gray-400" data-translate-key="caselaw.subtitle">Delve into the judgments that shape our legal landscape. This section will provide summaries and full-text access to key decisions from the Constitutional Court, Supreme Court of Appeal, and High Courts.</p>
+                </div>
+            </section>
+            
+            <!-- Section 5: Legislation Updates -->
+            <section class="section">
+                <div class="text-center w-full max-w-5xl">
+                    <i class="fas fa-bullhorn text-6xl text-red-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="updates.title">Legislation Updates</h2>
+                    <p class="text-lg text-gray-400 mb-6" data-translate-key="updates.subtitle">How does law in South Africa change? Understand the process and help us keep this database current.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-gray-900/50 p-6 rounded-lg">
+                        <div>
+                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.api_title">Is There an Automated API?</h3>
+                            <p class="text-gray-300" data-translate-key="updates.api_desc">Currently, the South African government does not provide a centralized, real-time API for legislation updates. This makes automatic tracking a significant challenge.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.gazette_title">The Government Gazette</h3>
+                            <p class="text-gray-300" data-translate-key="updates.gazette_desc">All new Acts, amendments, and regulations are published in the Government Gazette. It is typically published **every Friday**, though special editions can be released any day. This is the official source of truth.</p>
+                        </div>
+                    </div>
+                     <div class="mt-8">
+                         <a href="community.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg" data-translate-key="updates.cta">Join the Community Watch</a>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
     
+    <!-- Floating Action Button for Chatbot -->
+    <button id="open-chatbot-modal" class="fixed bottom-6 right-6 bg-purple-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-purple-700 transition-transform hover:scale-110">
+        <i class="fas fa-robot"></i>
+    </button>
+    
+    <!-- Modal container -->
+    <div id="modal-container"></div>
+    
     <script type="module" src="assets/js/main.js"></script>
-
 </body>
 </html>
-```css
-/* assets/css/style.css */
-body {
-    font-family: 'Open Sans', sans-serif;
-}
-.font-roboto-slab {
-    font-family: 'Roboto Slab', serif;
-}
-.hero-gradient {
-    background: linear-gradient(to right, #1e3a8a, #4f46e5);
-}
-.tab-btn {
-    transition: all 0.3s;
-    border-bottom: 4px solid transparent;
-    color: #9ca3af;
-}
-.tab-btn:hover {
-    color: white;
-}
-.tab-btn.active {
-    border-bottom-color: #818cf8;
-    color: white;
-}
-.tab-content {
-    display: none;
-    animation: fadeIn 0.5s;
-}
-.tab-content.active {
-    display: block;
-}
-.content-card {
-    background-color: #1f2937;
-    border: 1px solid #374151;
-    border-left: 5px solid #4f46e5;
-    transition: all 0.2s ease-in-out;
-}
-.content-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.content-card h3 {
-    color: #c7d2fe;
-}
-.search-highlight {
-    background-color: #fef08a;
-    color: #713f12;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-```javascript
-// assets/js/main.js
-import { constitution } from './data/national-legislation.js';
-import { acts } from './data/national-legislation.js';
-import { provincial } from './data/provincial-local-legislation.js';
-import { caseLaw } from './data/case-law.js';
-import { traditionalLaw } from './data/traditional-law.js';
-import { internationalLaw } from './data/international-law.js';
-import { bills } from './data/bills-gazettes.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    const tabsContainer = document.getElementById('tabs-container');
-    const contentArea = document.getElementById('tab-content-area');
-    const searchBar = document.getElementById('search-bar');
-    const searchBtn = document.getElementById('search-btn');
-
-    const allData = {
-        'constitution': constitution,
-        'national-legislation': acts,
-        'provincial-local': provincial,
-        'case-law': caseLaw,
-        'traditional-law': traditionalLaw,
-        'international-law': internationalLaw,
-        'bills-gazettes': bills
-    };
-
-    function renderContent(data, highlightTerm = '') {
-        let html = `<div class="space-y-4">`;
-        
-        data.forEach(item => {
-            let title = item.title;
-            let summary = item.summary;
-            
-            if (highlightTerm) {
-                const regex = new RegExp(highlightTerm, 'gi');
-                title = title.replace(regex, `<span class="search-highlight">${highlightTerm}</span>`);
-                summary = summary.replace(regex, `<span class="search-highlight">${highlightTerm}</span>`);
-            }
-
-            html += `
-                <div class="content-card p-6 rounded-lg">
-                    <h3 class="text-xl font-bold font-roboto-slab mb-2">${title}</h3>
-                    <p class="text-gray-400">${summary}</p>
-                </div>
-            `;
-        });
-
-        html += `</div>`;
-        contentArea.innerHTML = html;
-    }
-
-    function setActiveTab(targetId) {
-        const currentActive = tabsContainer.querySelector('.active');
-        if (currentActive) {
-            currentActive.classList.remove('active');
-        }
-        const newActiveBtn = tabsContainer.querySelector(`[data-target="${targetId}"]`);
-        if (newActiveBtn) {
-            newActiveBtn.classList.add('active');
-        }
-    }
-
-    function handleTabClick(e) {
-        if (e.target.classList.contains('tab-btn')) {
-            const targetId = e.target.dataset.target;
-            setActiveTab(targetId);
-            renderContent(allData[targetId] || []);
-        }
-    }
-
-    function handleSearch() {
-        const query = searchBar.value.trim().toLowerCase();
-        if (!query) {
-             // If search is empty, show the currently active tab's content
-            const activeTab = tabsContainer.querySelector('.active')?.dataset.target || 'constitution';
-            renderContent(allData[activeTab]);
-            return;
-        }
-
-        const allContent = Object.values(allData).flat();
-        const results = allContent.filter(item => 
-            item.title.toLowerCase().includes(query) || 
-            item.summary.toLowerCase().includes(query)
-        );
-        
-        tabsContainer.querySelector('.active')?.classList.remove('active');
-        renderContent(results, searchBar.value.trim());
-    }
-
-    tabsContainer.addEventListener('click', handleTabClick);
-    searchBtn.addEventListener('click', handleSearch);
-    searchBar.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') {
-            handleSearch();
-        }
-    });
-
-    // Initial render
-    renderContent(allData['constitution']);
-});
-```javascript
-// assets/js/data/national-legislation.js
-export const constitution = [
-    { title: "Chapter 1: Founding Provisions", summary: "Defines South Africa as one, sovereign, democratic state founded on the values of human dignity, equality, and the supremacy of the Constitution." },
-    { title: "Chapter 2: Bill of Rights", summary: "The cornerstone of democracy in South Africa. It enshrines the rights of all people in our country and affirms the democratic values of human dignity, equality and freedom." }
-];
-
-export const acts = [
-    { title: "Children's Act 38 of 2005", summary: "Governs the rights and responsibilities of parents and the paramountcy of the child's best interests." },
-    { title: "Occupational Health and Safety Act 85 of 1993", summary: "To provide for the health and safety of persons at work and for the health and safety of persons in connection with the use of plant and machinery." },
-    { title: "Promotion of Access to Information Act 2 of 2000 (PAIA)", summary: "Gives effect to the constitutional right of access to any information held by the State and any information that is held by another person and that is required for the exercise or protection of any rights." }
-];
-```javascript
-// assets/js/data/provincial-local-legislation.js
-export const provincial = [
-    { title: "Gauteng Provincial School Education Act, 1995", summary: "Provides for a uniform system for the organization, governance and funding of schools and education in the Gauteng Province." },
-    { title: "City of Johannesburg Metropolitan Municipality: Public Health By-laws", summary: "Regulates matters that have a bearing on the health of the public within the jurisdiction of the City of Johannesburg." }
-];
-```javascript
-// assets/js/data/case-law.js
-export const caseLaw = [
-    { title: "S v Makwanyane and Another (1995)", summary: "The landmark Constitutional Court case that abolished the death penalty in South Africa, finding it to be inconsistent with the rights to life and dignity." },
-    { title: "Fraser v Children's Court, Pretoria North and Others (1997)", summary: "A key case that dealt with the rights of unmarried fathers, finding that parts of the Child Care Act unfairly discriminated against them on the basis of sex and marital status." }
-];
-```javascript
-// assets/js/data/traditional-law.js
-export const traditionalLaw = [
-    { title: "Ukuthwala", summary: "A customary practice of marriage, which has become controversial due to its exploitation for forced child marriages, contrary to its original intent. Courts have intervened to protect children from this distortion of custom." },
-    { title: "Lobola (Bride Wealth)", summary: "The custom involving the transfer of cattle or other valuables from the groom's family to the bride's. It is a unifying practice between families and a symbol of commitment, not a 'purchase' of a wife. Its compatibility with gender equality principles is a subject of ongoing debate." }
-];
-```javascript
-// assets/js/data/international-law.js
-export const internationalLaw = [
-    { title: "The Jury System (United States)", summary: "A system where guilt in serious criminal trials is determined by a panel of ordinary citizens. South Africa uses a system where a judge or magistrate determines the outcome, sometimes with assessors for serious cases. The jury system is often debated for its perceived fairness versus its susceptibility to bias." },
-    { title: "Affirmative Action (United States)", summary: "Policies designed to counteract historical discrimination in employment and education. This provided a comparative framework for South Africa's Broad-Based Black Economic Empowerment (B-BBEE) policies, though the legal and social contexts differ significantly." }
-];
-```javascript
-// assets/js/data/bills-gazettes.js
-export const bills = [
-    { title: "Draft Basic Education Laws Amendment (BELA) Bill", summary: "A recent and controversial bill seeking to amend laws around school admission policies, language policies, and homeschooling regulation, sparking debate on the extent of state control versus school governing body autonomy." },
-    { title: "Government Gazette No. 49615 (2023)", summary: "Contains recent notices regarding national minimum wage adjustments and sector-specific determinations." }
-];
