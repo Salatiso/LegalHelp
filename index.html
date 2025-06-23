@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalHelp South Africa - The Law, Demystified</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <div class="app-shell">
+        <div id="mainContainer" class="main-container">
+            <!-- Section 1: Home -->
+            <section class="section hero-gradient text-white">
+                <div class="text-center max-w-4xl">
+                    <i class="fas fa-balance-scale text-6xl text-indigo-200 mb-6"></i>
+                    <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4" data-translate-key="home.title">The Law, Demystified.</h1>
+                    <p class="text-xl text-indigo-200 mb-8" data-translate-key="home.subtitle">Your comprehensive, single-view archive of South African legislation.</p>
+                    <div class="relative max-w-xl mx-auto">
+                        <input type="search" placeholder="Search any Act, case, or section..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition" data-translate-key="home.search_placeholder" placeholder-key="home.search_placeholder">
+                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center"><i class="fas fa-search text-xl"></i></button>
+                    </div>
+                     <p class="mt-8 text-indigo-200" data-translate-key="home.swipe_prompt">Use navigation or swipe to explore</p>
+                </div>
+            </section>
+
+            <!-- Section 2: The Constitution -->
+            <section class="section">
+                <div class="text-center max-w-4xl">
+                    <i class="fas fa-landmark text-6xl text-green-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="constitution.title">The Constitution</h2>
+                    <p class="text-lg text-gray-400 mb-6" data-translate-key="constitution.subtitle">The supreme law of the Republic. The foundation of our democracy and the ultimate source of all law. Explore the Bill of Rights, the structure of the state, and landmark Constitutional Court cases that have shaped our nation.</p>
+                    <a href="forms.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors" data-translate-key="constitution.cta">View Related Forms</a>
+                </div>
+            </section>
+
+            <!-- Section 3: Statutes & Acts -->
+            <section class="section">
+                <div class="text-center max-w-4xl">
+                     <i class="fas fa-scroll text-6xl text-blue-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="statutes.title">Statutes & Acts</h2>
+                    <p class="text-lg text-gray-400" data-translate-key="statutes.subtitle">Access a comprehensive database of laws passed by Parliament. The full text of all national acts will be searchable, categorized, and linked to relevant amendments and regulations for easy reference.</p>
+                </div>
+            </section>
+            
+            <!-- Section 4: Case Law -->
+            <section class="section">
+                <div class="text-center max-w-4xl">
+                    <i class="fas fa-gavel text-6xl text-yellow-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="caselaw.title">Case Law</h2>
+                    <p class="text-lg text-gray-400" data-translate-key="caselaw.subtitle">Delve into the judgments that shape our legal landscape. This section will provide summaries and full-text access to key decisions from the Constitutional Court, Supreme Court of Appeal, and High Courts.</p>
+                </div>
+            </section>
+            
+            <!-- Section 5: Legislation Updates -->
+            <section class="section">
+                <div class="text-center w-full max-w-5xl">
+                    <i class="fas fa-bullhorn text-6xl text-red-400 mb-6"></i>
+                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="updates.title">Legislation Updates</h2>
+                    <p class="text-lg text-gray-400 mb-6" data-translate-key="updates.subtitle">How does law in South Africa change? Understand the process and help us keep this database current.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-gray-900/50 p-6 rounded-lg">
+                        <div>
+                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.api_title">Is There an Automated API?</h3>
+                            <p class="text-gray-300" data-translate-key="updates.api_desc">Currently, the South African government does not provide a centralized, real-time API for legislation updates. This makes automatic tracking a significant challenge.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.gazette_title">The Government Gazette</h3>
+                            <p class="text-gray-300" data-translate-key="updates.gazette_desc">All new Acts, amendments, and regulations are published in the Government Gazette. It is typically published **every Friday**, though special editions can be released any day. This is the official source of truth.</p>
+                        </div>
+                    </div>
+                     <div class="mt-8">
+                         <a href="community.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg" data-translate-key="updates.cta">Join the Community Watch</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- Floating Action Button for Chatbot -->
+    <button id="open-chatbot-modal" class="fixed bottom-6 right-6 bg-purple-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-purple-700 transition-transform hover:scale-110">
+        <i class="fas fa-robot"></i>
+    </button>
+    
+    <!-- Modal container -->
+    <div id="modal-container"></div>
+    
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
