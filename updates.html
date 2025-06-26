@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislation Updates - LegalHelp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e5e7eb; /* Light text color */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Slab', serif;
+        }
+        .main-content-area {
+            min-height: calc(100vh - 100px);
+            padding: 2rem;
+            background-color: #1f2937;
+        }
+        .hero-section-updates {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%),
+                              url('https://placehold.co/1920x600/1f2937/a5b4fc?text=Legislation+Updates'); /* Placeholder for updates image */
+            background-size: cover;
+            background-position: center;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors;
+        }
+        .section-container {
+            @apply bg-gray-800 p-6 rounded-lg shadow-lg mb-8;
+        }
+        .update-card {
+            @apply bg-gray-700 p-4 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-200;
+        }
+        .update-card .date {
+            @apply text-sm text-gray-400 mb-2;
+        }
+        .update-card .tag {
+            @apply bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content-area px-4 py-8 max-w-7xl mx-auto">
+        <section class="hero-section-updates w-full px-4 text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Legislation Updates</h1>
+            <p class="text-lg md:text-xl max-w-2xl">Stay informed on the latest amendments, new acts, and legal developments shaping South African law.</p>
+        </section>
+
+        <section class="section-container">
+            <h2 class="text-3xl font-bold text-white mb-6">Recent Updates</h2>
+            <div id="updates-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Example Update Card -->
+                <div class="update-card">
+                    <p class="date">25 June 2024</p>
+                    <h3 class="text-xl font-semibold text-yellow-300 mb-2">New Cybercrimes Act Regulations Gazetted</h3>
+                    <p class="text-gray-300 text-sm">The latest regulations for the Cybercrimes Act have been published, detailing implementation procedures.</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <span class="tag">New Law</span>
+                        <span class="tag">Cybercrime</span>
+                    </div>
+                    <a href="#" class="text-teal-400 hover:underline text-sm mt-4 block" target="_blank" rel="noopener noreferrer">Read More <i class="fas fa-external-link-alt ml-1"></i></a>
+                </div>
+                <div class="update-card">
+                    <p class="date">18 June 2024</p>
+                    <h3 class="text-xl font-semibold text-yellow-300 mb-2">Amendment to Labour Relations Act</h3>
+                    <p class="text-gray-300 text-sm">Parliament passes an amendment clarifying collective bargaining procedures in certain sectors.</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <span class="tag">Amendment</span>
+                        <span class="tag">Labour Law</span>
+                    </div>
+                    <a href="#" class="text-teal-400 hover:underline text-sm mt-4 block" target="_blank" rel="noopener noreferrer">Read More <i class="fas fa-external-link-alt ml-1"></i></a>
+                </div>
+                <!-- More update cards will be populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="flex justify-center bg-gray-900 py-10 border-t border-gray-700">
+        <div class="flex max-w-[960px] flex-1 flex-col">
+            <div class="flex flex-col gap-6 px-5 py-5 text-center @container">
+                <div class="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around mt-8">
+                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Terms of Service</a>
+                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Privacy Policy</a>
+                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Contact Us</a>
+                </div>
+                <p class="text-gray-400 text-base font-normal leading-normal">© 2024 LegalHelp. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script to load header.html into sidebar-placeholder
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('sidebar-placeholder').innerHTML = html;
+                    // Highlight active nav link based on current page
+                    const path = window.location.pathname.split('/').pop();
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === path) {
+                            link.classList.add('active');
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+    </script>
+</body>
+</html>
