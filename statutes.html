@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statutes & Legislation - LegalHelp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e5e7eb; /* Light text color */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Slab', serif;
+        }
+        .main-content-area {
+            min-height: calc(100vh - 100px); /* Adjust based on header/footer height */
+            padding: 2rem;
+            background-color: #1f2937; /* Slightly lighter dark background for content */
+        }
+        .hero-section-statutes {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%),
+                              url('https://placehold.co/1920x600/1f2937/a5b4fc?text=Statutes+&+Legislation'); /* Placeholder for statutes image */
+            background-size: cover;
+            background-position: center;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            border-radius: 0.5rem; /* Match other rounded elements */
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors;
+        }
+        .section-container {
+            @apply bg-gray-800 p-6 rounded-lg shadow-lg mb-8;
+        }
+        .search-input {
+            @apply bg-gray-700 text-gray-200 border border-gray-600 focus:border-blue-500 focus:ring-blue-500 placeholder-gray-400 p-3 rounded-lg w-full;
+        }
+        .document-card {
+            @apply bg-gray-700 p-4 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-200;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content-area px-4 py-8 max-w-7xl mx-auto">
+        <section class="hero-section-statutes w-full px-4 text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Statutes & Legislation</h1>
+            <p class="text-lg md:text-xl max-w-2xl">Access and navigate the complete body of South African laws, acts, and regulations. Find the legal information you need quickly and easily.</p>
+        </section>
+
+        <section class="section-container">
+            <h2 class="text-3xl font-bold text-white mb-6">Browse Legislation</h2>
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <input type="text" id="statutes-search-input" placeholder="Search for acts, regulations, or keywords..." class="search-input flex-grow">
+                <select id="statutes-year-filter" class="search-input md:w-auto">
+                    <option value="">All Years</option>
+                    <!-- Years will be populated by JS -->
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+                <select id="statutes-category-filter" class="search-input md:w-auto">
+                    <option value="">All Categories</option>
+                    <!-- Categories will be populated by JS -->
+                    <option value="criminal">Criminal Law</option>
+                    <option value="civil">Civil Law</option>
+                </select>
+            </div>
+
+            <div id="statutes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Example Statute Card -->
+                <div class="document-card">
+                    <h3 class="text-xl font-semibold text-blue-300 mb-2">Basic Conditions of Employment Act, 75 of 1997</h3>
+                    <p class="text-sm text-gray-400 mb-2">Category: Labour Law | Year: 1997</p>
+                    <p class="text-gray-300 text-sm">Defines minimum terms and conditions of employment, including working hours, leave, and termination.</p>
+                    <a href="#" class="text-teal-400 hover:underline text-sm mt-4 block" target="_blank" rel="noopener noreferrer">View Act <i class="fas fa-external-link-alt ml-1"></i></a>
+                </div>
+                <div class="document-card">
+                    <h3 class="text-xl font-semibold text-blue-300 mb-2">National Health Act, 61 of 2003</h3>
+                    <p class="text-sm text-gray-400 mb-2">Category: Health Law | Year: 2003</p>
+                    <p class="text-gray-300 text-sm">Provides a framework for a unified health system in South Africa.</p>
+                    <a href="#" class="text-teal-400 hover:underline text-sm mt-4 block" target="_blank" rel="noopener noreferrer">View Act <i class="fas fa-external-link-alt ml-1"></i></a>
+                </div>
+                <!-- More statute cards will be populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="flex justify-center bg-gray-900 py-10 border-t border-gray-700">
+        <div class="flex max-w-[960px] flex-1 flex-col">
+            <div class="flex flex-col gap-6 px-5 py-5 text-center @container">
+                <div class="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around mt-8">
+                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Terms of Service</a>
+                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Privacy Policy</a>
+                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Contact Us</a>
+                </div>
+                <p class="text-gray-400 text-base font-normal leading-normal">© 2024 LegalHelp. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script to load header.html into sidebar-placeholder
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('sidebar-placeholder').innerHTML = html;
+                    // Highlight active nav link based on current page
+                    const path = window.location.pathname.split('/').pop();
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === path) {
+                            link.classList.add('active');
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+    </script>
+</body>
+</html>
