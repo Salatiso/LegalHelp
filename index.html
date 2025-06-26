@@ -3,92 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LegalHelp South Africa - The Law, Demystified</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>The Constitution of South Africa - LegalHelp</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- LegalHelp Fonts: Roboto Slab for headings, Open Sans for body -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Main LegalHelp CSS -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+        /* General styling consistent with LegalHelp theme */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #1a202c; /* Dark background from original style */
+            color: #e5e7eb; /* Light text color from original style */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        /* Overall app shell to ensure full height and internal scrolling */
+        .app-shell {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main content area (excluding header/footer) that should scroll */
+        .main-content-scrollable {
+            flex-grow: 1; /* Allows it to take up available vertical space */
+            overflow-y: auto; /* Enables scrolling for the entire main content area */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            padding: 1rem; /* Overall padding */
+        }
+        @media (min-width: 1024px) {
+            .main-content-scrollable {
+                padding: 2rem; /* More padding for desktop */
+            }
+        }
+
+        /* Container for the 2-column layout on desktop */
+        .desktop-two-column-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 1.5rem;
+            max-width: 1200px; /* Max width for content */
+            margin: 0 auto; /* Center content */
+        }
+        @media (min-width: 1024px) {
+            .desktop-two-column-grid {
+                grid-template-columns: 2.5fr 1.5fr; /* Content and Timeline */
+            }
+        }
+
+        /* Hero section specific styling */
+        .hero-constitution {
+            background-color: #1a202c; /* Base dark background */
+            position: relative; /* For SVG positioning */
+            overflow: hidden; /* Ensure SVG doesn't bleed */
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            color: #e5e7eb;
+            margin-bottom: 2rem;
+            z-index: 0; /* Ensure content is above SVG */
+        }
+        .hero-constitution-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind content */
+            opacity: 0.2; /* Subtle transparency */
+            filter: grayscale(100%) brightness(0.5); /* Desaturate and darken */
+        }
+        .hero-constitution h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .hero-constitution h1 {
+                font-size: 4rem;
+            }
+        }
+
+        /* General section card styling */
+        .section-card-dark {
+            background-color: #1f2937;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1.5rem;
+            border: 1px solid #374151;
+        }
+
+        /* Button styling */
+        .btn-indigo {
+            @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-5 rounded-full transition-colors duration-200;
+        }
+        .btn-blue {
+            @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full transition-colors duration-200;
+        }
+        .print-button, .quiz-button, .pdf-button {
+            @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center transition-colors duration-200;
+        }
+        .quiz-button { @apply bg-green-600 hover:bg-green-700; }
+        .pdf-button { @apply bg-blue-600 hover:bg-blue-700; }
+
+
+        /* Input and Select fields */
+        .input-dark, .select-dark {
+            @apply bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2;
+        }
+
+        /* Tab navigation styling */
+        .tab-link {
+            @apply flex flex-col items-center justify-center py-3 px-4 text-sm font-semibold transition-colors duration-200;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+        .tab-link-inactive {
+            @apply border-b-2 border-transparent text-gray-400 hover:text-indigo-300;
+        }
+        .tab-link-active {
+            @apply border-b-2 border-indigo-400 text-indigo-400;
+        }
+
+        /* Constitution content display area */
+        .constitution-content-display {
+            @apply bg-gray-800 p-6 rounded-lg shadow-inner border border-gray-700;
+            min-height: 300px; /* Ensure it has some height */
+        }
+        .constitution-content-display h3 {
+            @apply text-xl font-semibold text-indigo-300 mt-6 mb-3;
+        }
+        .constitution-content-display p {
+            @apply text-gray-300 mb-4 leading-relaxed;
+        }
+        .constitution-content-display ul {
+            @apply list-disc list-inside ml-4;
+        }
+        .highlight {
+            @apply bg-yellow-400 text-gray-900 rounded px-1 font-semibold;
+        }
+
+        /* Document and Resource cards */
+        .doc-card, .resource-card {
+            @apply bg-gray-700 p-4 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-200 cursor-pointer flex flex-col;
+        }
+        .doc-card-image-placeholder, .resource-card-image-placeholder {
+            @apply w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col justify-center items-center text-gray-500 text-6xl mb-3;
+            background-color: #374151; /* gray-700 */
+            border: 1px dashed #4b5563; /* gray-600 */
+        }
+
+        /* Vertical Timeline Styles (Reverted to original behavior) */
+        .vertical-timeline-container {
+            height: calc(100vh - 80px - 4rem); /* Full viewport height minus header and section padding */
+            background-color: #1f2937; /* Dark background */
+            padding: 1.5rem 1rem;
+            overflow-y: auto; /* Allows internal scrolling */
+            border-left: 1px solid #374151; /* Gray-700 for border */
+            border-radius: 0.75rem; /* Consistent rounded corners */
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            margin-top: 2rem; /* Spacing from the top of the grid cell */
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .vertical-timeline-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .timeline-wrapper { position: relative; }
+        .timeline-track {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-image: linear-gradient(to bottom, #4f46e5, #10b981, #ef4444, #f59e0b); /* Original gradient */
+        }
+        .timeline-point {
+            position: relative;
+            margin-bottom: 50px;
+            padding-left: 50px;
+            cursor: pointer;
+            z-index: 2; /* Ensure points are above the track */
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 22px;
+            top: 5px;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background-color: #374151; /* Gray-700 */
+            border: 3px solid #6366f1; /* Indigo-500 */
+            border-radius: 50%;
+            z-index: 3; /* Dot above track */
+            transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+        }
+        .timeline-point:hover .timeline-dot {
+            transform: translateX(-50%) scale(1.3);
+            background-color: #818cf8; /* Indigo-300 on hover */
+            border-color: #818cf8;
+        }
+        .timeline-content .date {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+            color: #a5b4fc; /* Blue-300 */
+        }
+        .timeline-content .event {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #e5e7eb; /* Gray-200 */
+        }
+
+        /* Modal Styles (retained) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: #1f2937; color: #e5e7eb; padding: 2rem; border-radius: 8px;
+            width: 90%; max-width: 700px; max-height: 80vh; overflow-y: auto; position: relative;
+            transform: scale(0.9); transition: transform 0.3s; border: 1px solid #374151;
+        }
+        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; cursor: pointer;
+            color: #9ca3af; transition: color 0.2s;
+        }
+        .modal-close:hover { color: #d1d5db; }
+
+        /* Quiz Modal specific styles */
+        .quiz-modal-content {
+            background-color: #1f2937; /* Gray-800 */
+            color: #e5e7eb; /* Gray-200 */
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border: 1px solid #374151;
+        }
+        .quiz-option {
+            @apply bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-3 rounded-lg mb-2 text-left cursor-pointer transition-colors duration-200;
+        }
+        .quiz-option.selected {
+            @apply border-2 border-indigo-400;
+        }
+        .quiz-option.correct {
+            @apply bg-green-700 border-green-500;
+        }
+        .quiz-option.incorrect {
+            @apply bg-red-700 border-red-500;
+        }
+    </style>
 </head>
 <body>
-
-    <div id="header-placeholder"></div>
+    <div id="sidebar-placeholder"></div>
 
     <div class="app-shell">
-        <div id="mainContainer" class="main-container">
-            <!-- Section 1: Home -->
-            <section class="section hero-gradient text-white">
-                <div class="text-center max-w-4xl">
-                    <i class="fas fa-balance-scale text-6xl text-indigo-200 mb-6"></i>
-                    <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4" data-translate-key="home.title">The Law, Demystified.</h1>
-                    <p class="text-xl text-indigo-200 mb-8" data-translate-key="home.subtitle">Your comprehensive, single-view archive of South African legislation.</p>
-                    <div class="relative max-w-xl mx-auto">
-                        <input type="search" placeholder="Search any Act, case, or section..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition" data-translate-key="home.search_placeholder" placeholder-key="home.search_placeholder">
-                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center"><i class="fas fa-search text-xl"></i></button>
-                    </div>
-                     <p class="mt-8 text-indigo-200" data-translate-key="home.swipe_prompt">Use navigation or swipe to explore</p>
-                </div>
+        <!-- Main content area that will scroll -->
+        <main class="main-content-scrollable">
+            <!-- Hero Section -->
+            <section class="hero-constitution w-full">
+                <svg class="hero-constitution-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Abstract representation of balance scale or law concept -->
+                    <path d="M 10 50 L 50 10 L 90 50 L 50 90 Z" stroke="#6366f1" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                    <path d="M 30 60 L 50 40 L 70 60 L 50 80 Z" stroke="#4f46e5" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                    <circle cx="50" cy="50" r="20" stroke="#a5b4fc" stroke-width="1" vector-effect="non-scaling-stroke"/>
+                    <line x1="30" y1="50" x2="70" y2="50" stroke="#6366f1" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                    <line x1="50" y1="30" x2="50" y2="70" stroke="#6366f1" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                </svg>
+                <h1 class="text-4xl md:text-5xl font-bold font-roboto-slab mb-4">
+                    The Constitution of South Africa
+                </h1>
+                <p class="text-lg md:text-xl max-w-2xl text-indigo-100 mb-8">
+                    Your comprehensive guide to the supreme law of our nation, crafted for every South African.
+                </p>
+                <button id="start-exploring-button" class="btn-indigo text-lg px-8 py-3 rounded-full">
+                    <span class="truncate">Start Exploring</span>
+                </button>
             </section>
 
-            <!-- Section 2: The Constitution -->
-            <section class="section">
-                <div class="text-center max-w-4xl">
-                    <i class="fas fa-landmark text-6xl text-green-400 mb-6"></i>
-                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="constitution.title">The Constitution</h2>
-                    <p class="text-lg text-gray-400 mb-6" data-translate-key="constitution.subtitle">The supreme law of the Republic. The foundation of our democracy and the ultimate source of all law. Explore the Bill of Rights, the structure of the state, and landmark Constitutional Court cases that have shaped our nation.</p>
-                    <a href="forms.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors" data-translate-key="constitution.cta">View Related Forms</a>
-                </div>
-            </section>
+            <!-- Desktop two-column grid -->
+            <div class="desktop-two-column-grid">
+                <!-- Left Column: Constitution Content and Controls -->
+                <div class="flex flex-col">
+                    <!-- Interactive Constitution Viewer -->
+                    <section class="section-card-dark" id="constitution-viewer-section">
+                        <h2 class="text-3xl font-bold text-white mb-6">Interactive Constitution Viewer</h2>
+                        <div class="flex flex-col md:flex-row items-center gap-4 mb-6">
+                            <input type="text" id="constitution-search-input" placeholder="Search the Constitution..."
+                                class="input-dark flex-grow h-12">
+                            <button id="print-constitution-button" class="print-button md:w-auto w-full h-12">
+                                <i class="fas fa-print mr-2"></i> Print Section
+                            </button>
+                            <button id="view-pdf-button" class="pdf-button md:w-auto w-full h-12">
+                                <i class="fas fa-file-pdf mr-2"></i> View PDF
+                            </button>
+                            <button id="take-quiz-button" class="quiz-button md:w-auto w-full h-12 hidden">
+                                <i class="fas fa-question-circle mr-2"></i> Take Quiz
+                            </button>
+                        </div>
 
-            <!-- Section 3: Statutes & Acts -->
-            <section class="section">
-                <div class="text-center max-w-4xl">
-                     <i class="fas fa-scroll text-6xl text-blue-400 mb-6"></i>
-                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="statutes.title">Statutes & Acts</h2>
-                    <p class="text-lg text-gray-400" data-translate-key="statutes.subtitle">Access a comprehensive database of laws passed by Parliament. The full text of all national acts will be searchable, categorized, and linked to relevant amendments and regulations for easy reference.</p>
-                </div>
-            </section>
-            
-            <!-- Section 4: Case Law -->
-            <section class="section">
-                <div class="text-center max-w-4xl">
-                    <i class="fas fa-gavel text-6xl text-yellow-400 mb-6"></i>
-                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="caselaw.title">Case Law</h2>
-                    <p class="text-lg text-gray-400" data-translate-key="caselaw.subtitle">Delve into the judgments that shape our legal landscape. This section will provide summaries and full-text access to key decisions from the Constitutional Court, Supreme Court of Appeal, and High Courts.</p>
-                </div>
-            </section>
-            
-            <!-- Section 5: Legislation Updates -->
-            <section class="section">
-                <div class="text-center w-full max-w-5xl">
-                    <i class="fas fa-bullhorn text-6xl text-red-400 mb-6"></i>
-                    <h2 class="text-4xl font-bold font-roboto-slab text-white mb-4" data-translate-key="updates.title">Legislation Updates</h2>
-                    <p class="text-lg text-gray-400 mb-6" data-translate-key="updates.subtitle">How does law in South Africa change? Understand the process and help us keep this database current.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-gray-900/50 p-6 rounded-lg">
-                        <div>
-                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.api_title">Is There an Automated API?</h3>
-                            <p class="text-gray-300" data-translate-key="updates.api_desc">Currently, the South African government does not provide a centralized, real-time API for legislation updates. This makes automatic tracking a significant challenge.</p>
+                        <div class="border-b border-gray-700 mb-4 overflow-x-auto">
+                            <nav id="constitution-tabs" class="flex">
+                                <!-- Tabs will be dynamically populated by JavaScript -->
+                            </nav>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.gazette_title">The Government Gazette</h3>
-                            <p class="text-gray-300" data-translate-key="updates.gazette_desc">All new Acts, amendments, and regulations are published in the Government Gazette. It is typically published **every Friday**, though special editions can be released any day. This is the official source of truth.</p>
+
+                        <!-- Constitution Section Display Area -->
+                        <div id="constitution-display-area" class="constitution-content-display">
+                            <h2 id="constitution-section-title" class="text-2xl font-bold font-roboto-slab text-indigo-400 mb-4">Welcome to the South African Constitution</h2>
+                            <div id="constitution-section-content" class="text-gray-300">
+                                <!-- Content loaded by JS -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Supporting Documents Section -->
+                    <section class="section-card-dark">
+                        <h2 class="text-3xl font-bold text-white mb-6">Supporting Documents & Resources</h2>
+                        <p class="text-gray-300 mb-6">Explore amendments, drafting notes, previous constitutions, and key legal challenges that have shaped our supreme law.</p>
+
+                        <div class="flex flex-col md:flex-row items-center gap-4 mb-6">
+                            <input type="text" id="document-search-input" placeholder="Search documents..."
+                                class="input-dark flex-grow h-12">
+                            <select id="document-type-filter" class="select-dark md:w-auto h-12">
+                                <option value="">All Document Types</option>
+                                <option value="amendment">Amendments</option>
+                                <option value="drafting">Drafting Notes & Minutes</option>
+                                <option value="challenge">Legal Challenges</option>
+                                <option value="previous">Previous Constitutions</option>
+                                <option value="contributing">Contributing Documents</option>
+                                <option value="judgment">Court Judgments</option>
+                                <option value="debate">Parliamentary Debates</option>
+                                <option value="article">Academic Articles</option>
+                                <option value="public_consultation">Public Consultations</option>
+                                <option value="handbook">Handbooks & Guides</option>
+                                <option value="program">Civic Education Programs</option>
+                                <option value="case">Landmark Cases</option>
+                            </select>
+                        </div>
+
+                        <div id="supporting-documents-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Documents will be populated by JavaScript -->
+                        </div>
+                    </section>
+
+                    <!-- Call to Action / Get Involved -->
+                    <section class="bg-indigo-700 bg-opacity-70 p-8 rounded-lg text-center shadow-xl mt-6">
+                        <h2 class="text-3xl font-bold font-roboto-slab text-white mb-4">Need More Assistance or Want to Get Involved?</h2>
+                        <p class="text-lg text-indigo-100 mb-6">LegalHelp is here to empower you. If you have questions about the Constitution or need legal assistance, reach out!</p>
+                        <a href="contact.html" class="btn-indigo !bg-white !text-indigo-800 font-bold py-3 px-8 rounded-full text-lg shadow-lg">
+                            Contact Us
+                        </a>
+                    </section>
+                </div>
+
+                <!-- Right Column: Vertical Timeline - "Journey of South African Law" -->
+                <aside class="vertical-timeline-container hidden lg:block">
+                    <h2 class="text-2xl font-bold font-roboto-slab text-white text-center mb-6">Journey of South African Law</h2>
+                    <div class="timeline-wrapper">
+                        <div class="timeline-track"></div>
+                        <div id="timeline-scroller-vertical">
+                            <!-- Vertical timeline points will be injected here by JS from history-data.js -->
                         </div>
                     </div>
-                     <div class="mt-8">
-                         <a href="community.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg" data-translate-key="updates.cta">Join the Community Watch</a>
+                </aside>
+            </div>
+        </main>
+
+        <!-- Footer (if not dynamically loaded by main.js) -->
+        <footer class="flex justify-center bg-gray-900 py-10 border-t border-gray-700">
+            <div class="flex max-w-[960px] flex-1 flex-col">
+                <div class="flex flex-col gap-6 px-5 py-5 text-center">
+                    <div class="flex flex-wrap items-center justify-center gap-6 md:flex-row md:justify-around mt-8">
+                        <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Terms of Service</a>
+                        <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Privacy Policy</a>
+                        <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Contact Us</a>
                     </div>
+                    <p class="text-gray-400 text-base font-normal leading-normal">© 2024 LegalHelp. All rights reserved.</p>
                 </div>
-            </section>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="modal-overlay">
+        <div class="quiz-modal-content">
+            <span class="modal-close" id="quiz-modal-close">&times;</span>
+            <h2 id="quiz-title" class="text-2xl font-bold font-roboto-slab text-indigo-400 mb-4 border-b border-gray-600 pb-2">Quiz</h2>
+            <div id="quiz-container">
+                <!-- Quiz content (question, options, feedback) will be loaded here by JS -->
+            </div>
+            <button id="next-question-button" class="btn-indigo w-full mt-6 py-3">Next Question <i class="fas fa-arrow-right ml-2"></i></button>
+            <button id="restart-quiz-button" class="btn-blue w-full mt-4 py-3 hidden">Restart Quiz <i class="fas fa-redo ml-2"></i></button>
         </div>
     </div>
-    
-    <!-- Floating Action Button for Chatbot -->
-    <button id="open-chatbot-modal" class="fixed bottom-6 right-6 bg-purple-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-purple-700 transition-transform hover:scale-110">
-        <i class="fas fa-robot"></i>
-    </button>
-    
-    <!-- Modal container -->
-    <div id="modal-container"></div>
-    
-    <script type="module" src="assets/js/main.js"></script>
+
+    <!-- Timeline Detail Modal -->
+    <div id="timeline-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modal-title" class="text-2xl font-bold mb-4 border-b border-gray-600 pb-2"></h2>
+            <div id="modal-details" class="text-gray-300"></div>
+            <div id="modal-references" class="mt-6 pt-4 text-sm border-t border-gray-700">
+                <p><strong>Primary Source:</strong> <span id="modal-primary-source"></span></p>
+                <p><strong>Secondary Source:</strong> <span id="modal-secondary-source"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Imports -->
+    <script src="assets/js/main.js" type="module"></script>
+    <script src="assets/js/constitution-data.js" type="module"></script>
+    <script src="assets/js/history-data.js" type="module"></script>
+    <script src="assets/js/constitution-quizzes.js" type="module"></script>
+    <script src="assets/js/constitution.js" type="module"></script>
+
+    <script>
+        // Script to load header.html
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('sidebar-placeholder').innerHTML = html;
+                    // Highlight active nav link after header loads
+                    const currentPath = window.location.pathname.split('/').pop();
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active'); // Remove active from all first
+                        const linkHref = link.getAttribute('href');
+                        const linkPage = linkHref.split('/').pop().split('#')[0]; // Get the page name from href
+                        if (linkPage === currentPath) {
+                            link.classList.add('active');
+                        }
+                        if (currentPath === 'index.html' || currentPath === '') {
+                             if (linkHref.startsWith('index.html#home')) {
+                                 link.classList.add('active');
+                             } else if (linkHref === 'index.html' && currentPath === '') {
+                                link.classList.add('active');
+                             }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading header:', error));
+        });
+    </script>
 </body>
 </html>
