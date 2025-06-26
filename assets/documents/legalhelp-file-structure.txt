@@ -1,0 +1,59 @@
+LegalHelp/
+├── assets/
+│   ├── css/
+│   │   └── style.css            (Existing, potentially updated with global dark theme styles)
+│   ├── documents/
+│   │   ├── Tool_Functionality_Guide.txt
+│   │   ├── Tech-Specs-Doc_Tool_Generation.txt
+│   │   ├── South_African_Lower_Courts_Database.txt
+│   │   ├── Sazi.life_Strategic_Profile.txt
+│   │   ├── Sazi.life_ Strategic Profile & Educational Ecosystem.txt
+│   │   ├── Proposal-Case_Process_Tracker.txt
+│   │   ├── legalhelp.txt
+│   │   ├── legalhelp-tech-specs.txt
+│   │   ├── LegaHelp_Case_Tracker-Reasearch.txt
+│   │   ├── Flamea_Blueprint_Application_Profile.txt
+│   │   └── amendments/            (New directory for constitution amendments)
+│   │       └── first_amendment_2000.pdf (Placeholder)
+│   │   └── drafting/              (New directory for drafting notes)
+│   │       └── bill_of_rights_notes.pdf (Placeholder)
+│   ├── js/
+│   │   ├── auth.js
+│   │   ├── case-tracker.js
+│   │   ├── dashboard.js
+│   │   ├── firebase-config.js
+│   │   ├── forms.js
+│   │   ├── higher_special_courts_sa.js
+│   │   ├── law_gender_ngos_db.js
+│   │   ├── legalhelp-master-db.js
+│   │   ├── locator.js
+│   │   ├── lower_courts_ec.js
+│   │   ├── lower_courts_fs.js
+│   │   ├── lower_courts_gp.js
+│   │   ├── lower_courts_kzn.js
+│   │   ├── lower_courts_lp.js
+│   │   ├── lower_courts_mp.js
+│   │   ├── lower_courts_nc.js
+│   │   ├── lower_courts_nw.js
+│   │   ├── lower_courts_wc.js
+│   │   ├── main.js                  (Existing, handles sidebar loading and global scripts)
+│   │   ├── resources.js
+│   │   ├── south_african_government_service_points.js
+│   │   ├── translations.js
+│   │   ├── constitution.js          (NEW: Logic for Constitution page)
+│   │   ├── constitution-data.js     (NEW: Data for Constitution text and documents)
+│   │   └── history-data.js          (NEW: Data for legal history timeline)
+│   └── images/                     (New directory for any specific page images)
+│       └── parliament_placeholder.jpg (Placeholder for hero image, if not using URL)
+├── chatbot.html
+├── community.html
+├── **constitution.html** (NEW: The updated Constitution page)
+├── case-tracker.html
+├── dashboard.html
+├── forms.html
+├── header.html                      (Existing, loaded into sidebar-placeholder)
+├── index.html
+├── join-the-movement.html
+├── login.html
+├── README.md
+└── resources.html
