@@ -2,15 +2,16 @@
  * @fileoverview
  * This file contains the JavaScript logic for the LegalHelp Constitution page.
  * It handles constitution search, section display via tabs and search,
- * supporting document filtering, and the interactive historical timeline.
+ * supporting document filtering, and the interactive horizontal historical timeline.
  */
 
 import { constitutionContent, supportingDocuments } from './constitution-data.js';
-import { verticalTimelineData } from './history-data.js';
+import { verticalTimelineData } from './history-data.js'; // Note: Renamed in usage for clarity, but variable name remains consistent
 
 // --- DOM Elements ---
 const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
 const startExploringButton = document.getElementById('start-exploring-button');
+const constitutionViewerSection = document.getElementById('constitution-viewer-section'); // New ID to scroll to
 
 const constitutionSearchInput = document.getElementById('constitution-search-input');
 const constitutionTabsContainer = document.getElementById('constitution-tabs');
@@ -23,7 +24,7 @@ const documentSearchInput = document.getElementById('document-search-input');
 const documentTypeFilter = document.getElementById('document-type-filter');
 const supportingDocumentsList = document.getElementById('supporting-documents-list');
 
-const timelineScroller = document.getElementById('timeline-scroller');
+const timelineScrollerHorizontal = document.getElementById('timeline-scroller-horizontal'); // Changed ID for horizontal
 const timelineModal = document.getElementById('timeline-modal');
 const modalTitle = document.getElementById('modal-title');
 const modalDetails = document.getElementById('modal-details');
@@ -51,12 +52,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateConstitutionTabs();
     displayConstitutionContent('preamble'); // Display preamble by default
     renderSupportingDocuments(supportingDocuments); // Display all documents initially
-    createVerticalTimeline();
+    createHorizontalTimeline(); // Call the new horizontal timeline function
 
     // --- Event Listeners ---
     startExploringButton.addEventListener('click', () => {
         // Scroll to the interactive viewer section smoothly
-        constitutionSearchInput.scrollIntoView({ behavior: 'smooth' });
+        constitutionViewerSection.scrollIntoView({ behavior: 'smooth' });
     });
 
     constitutionSearchInput.addEventListener('input', handleConstitutionSearch);
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     documentSearchInput.addEventListener('input', handleDocumentSearch);
     documentTypeFilter.addEventListener('change', handleDocumentFilter);
 
-    // Modal close functionality
+    // Modal close functionality for timeline
     if (timelineModal) {
         closeModalBtn.addEventListener('click', () => timelineModal.classList.remove('visible'));
         timelineModal.addEventListener('click', (e) => {
@@ -85,12 +86,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 function populateConstitutionTabs() {
     constitutionTabsContainer.innerHTML = ''; // Clear existing tabs
 
-    // Add Preamble as the first tab (hardcoded in structure but dynamic in display)
+    // Add Preamble as the first tab
     const preambleTab = document.createElement('a');
     preambleTab.href = "#";
-    preambleTab.className = 'tab-link';
+    preambleTab.className = 'tab-link'; // Initial class, active status will be set by displayConstitutionContent
     preambleTab.dataset.chapterId = 'preamble';
-    preambleTab.innerHTML = '<p>Preamble</p>';
+    preambleTab.innerHTML = 'Preamble';
     preambleTab.addEventListener('click', (e) => {
         e.preventDefault();
         displayConstitutionContent('preamble');
@@ -103,7 +104,7 @@ function populateConstitutionTabs() {
         tab.href = "#";
         tab.className = 'tab-link tab-link-inactive'; // Inactive by default
         tab.dataset.chapterId = chapter.id;
-        tab.innerHTML = `<p>${chapter.title}</p>`;
+        tab.innerHTML = `${chapter.title}`;
         tab.addEventListener('click', (e) => {
             e.preventDefault();
             displayConstitutionContent(chapter.id);
@@ -148,17 +149,15 @@ function displayConstitutionContent(id, highlightQuery = '') {
     } else {
         // Find chapter or section
         let foundItem = null;
-        let isChapter = false;
 
         // Check if ID is a chapter
         const chapter = constitutionContent.find(c => c.id === id);
         if (chapter) {
             foundItem = chapter;
-            isChapter = true;
             titleText = chapter.title;
-            contentHtml = `<p>This is the overview for <strong>${chapter.title}</strong>. Below are its sections:</p><ul class="list-disc list-inside ml-4 mt-4">`;
+            contentHtml = `<p class="text-gray-300 mb-4">This is the overview for <strong>${chapter.title}</strong>. Below are its sections:</p><ul class="list-disc list-inside ml-4 mt-4">`;
             chapter.sections.forEach(section => {
-                contentHtml += `<li><a href="#" class="text-blue-400 hover:underline view-section-link" data-section-id="${section.id}">${section.title}</a></li>`;
+                contentHtml += `<li><a href="#" class="text-indigo-400 hover:underline view-section-link" data-section-id="${section.id}">${section.title}</a></li>`;
             });
             contentHtml += `</ul>`;
 
@@ -186,7 +185,7 @@ function displayConstitutionContent(id, highlightQuery = '') {
 
         if (!foundItem) {
             titleText = "Content Not Found";
-            contentHtml = "<p>The requested Constitution content could not be found. Please try another selection or search term.</p>";
+            contentHtml = "<p class='text-gray-300'>The requested Constitution content could not be found. Please try another selection or search term.</p>";
         }
     }
 
@@ -220,6 +219,27 @@ function handleConstitutionSearch() {
     }
 
     let searchResults = [];
+
+    // Check Preamble
+    const preambleContent = `We, the people of South Africa, recognise the injustices of our past; honour those who suffered for justice and freedom in our land; respect those who have worked to build and develop our country; and believe that South Africa belongs to all who live in it, united in our diversity.
+    We therefore, through our freely elected representatives, adopt this Constitution as the supreme law of the Republic so as to –
+    Heal the divisions of the past and establish a society based on democratic values, social justice and fundamental human rights;
+    Lay the foundations for a democratic and open society in which government is based on the will of the people and every citizen is equally protected by law;
+    Improve the quality of life of all citizens and free the potential of each person; and
+    Build a united and democratic South Africa able to take its rightful place as a sovereign state in the family of nations.
+    May God protect our people. Nkosi Sikelel' iAfrika. Morena boloka setjhaba sa heso. God seën Suid-Afrika. God bless South Africa. Mudzimu fhatutshedza Afurika. Hosi katekisa Afrika.`;
+
+    if (preambleContent.toLowerCase().includes(query)) {
+        searchResults.push({
+            chapterTitle: "Preamble",
+            sectionTitle: "Preamble",
+            content: preambleContent,
+            id: 'preamble',
+            chapterId: 'preamble'
+        });
+    }
+
+
     constitutionContent.forEach(chapter => {
         chapter.sections.forEach(section => {
             const sectionText = (section.title + " " + section.content).toLowerCase();
@@ -234,30 +254,6 @@ function handleConstitutionSearch() {
             }
         });
     });
-
-    // Also search in Preamble if exists
-    const preambleText = constitutionSectionContent.dataset.preambleContent ? constitutionSectionContent.dataset.preambleContent.toLowerCase() : '';
-    const preambleMatch = preambleText.includes(query);
-    if (preambleMatch && constitutionSectionTitle.textContent.includes("Preamble")) {
-        // If preamble is currently displayed and matches, just highlight
-        displayConstitutionContent('preamble', query);
-        return;
-    } else if (preambleMatch) {
-        // If preamble matches but is not currently displayed, add it to results
-        searchResults.unshift({ // Add to the beginning
-            chapterTitle: "Preamble",
-            sectionTitle: "Preamble",
-            content: `We, the people of South Africa, recognise the injustices of our past; honour those who suffered for justice and freedom in our land; respect those who have worked to build and develop our country; and believe that South Africa belongs to all who live in it, united in our diversity.
-            We therefore, through our freely elected representatives, adopt this Constitution as the supreme law of the Republic so as to –
-            Heal the divisions of the past and establish a society based on democratic values, social justice and fundamental human rights;
-            Lay the foundations for a democratic and open society in which government is based on the will of the people and every citizen is equally protected by law;
-            Improve the quality of life of all citizens and free the potential of each person; and
-            Build a united and democratic South Africa able to take its rightful place as a sovereign state in the family of nations.
-            May God protect our people. Nkosi Sikelel' iAfrika. Morena boloka setjhaba sa heso. God seën Suid-Afrika. God bless South Africa. Mudzimu fhatutshedza Afurika. Hosi katekisa Afrika.`,
-            id: 'preamble',
-            chapterId: 'preamble'
-        });
-    }
 
     renderConstitutionSearchResults(searchResults, query);
 }
@@ -286,11 +282,11 @@ function renderConstitutionSearchResults(results, query) {
         const displayedContent = result.content; // Use full content for display
         html += `
             <div class="mb-6 p-4 bg-gray-700 rounded-lg border border-gray-600 shadow-md">
-                <h3 class="text-xl font-bold text-blue-300">
+                <h3 class="text-xl font-bold text-indigo-300">
                     ${result.chapterTitle} - ${result.sectionTitle}
                 </h3>
                 <p class="text-gray-300 text-sm mt-2 line-clamp-3">${highlightMatches(displayedContent, query)}</p>
-                <button class="text-teal-400 hover:underline text-sm mt-2 view-section-button" data-section-id="${result.id}">Read Full Section</button>
+                <button class="text-indigo-400 hover:underline text-sm mt-2 view-section-button" data-section-id="${result.id}">Read Full Section</button>
             </div>
         `;
     });
@@ -314,9 +310,12 @@ function renderConstitutionSearchResults(results, query) {
  */
 function highlightMatches(text, query) {
     if (!query) return text;
-    const regex = new RegExp(`(${query})`, 'gi');
+    // Escape special characters in query to prevent regex errors
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedQuery})`, 'gi');
     return text.replace(regex, '<span class="bg-yellow-400 text-gray-900 rounded px-1 font-semibold">$1</span>');
 }
+
 
 /**
  * Triggers the browser's print functionality for the current constitution section.
@@ -368,10 +367,10 @@ function renderSupportingDocuments(docs) {
                 <i class="fas fa-file-alt"></i> <!-- Generic file icon -->
             </div>
             <div>
-                <h3 class="text-base font-medium leading-normal text-blue-300">${doc.title}</h3>
+                <h3 class="text-base font-semibold leading-normal text-indigo-300">${doc.title}</h3>
                 <p class="text-sm font-normal leading-normal text-gray-400">Type: ${doc.type.charAt(0).toUpperCase() + doc.type.slice(1)} | Date: ${doc.date}</p>
-                <p class="text-gray-300 text-sm mt-1">${doc.description}</p>
-                <a href="${doc.url}" class="text-teal-400 hover:underline text-sm mt-2 block" target="_blank" rel="noopener noreferrer">View Document <i class="fas fa-external-link-alt ml-1"></i></a>
+                <p class="text-gray-300 text-sm flex-grow">${doc.description}</p>
+                <a href="${doc.url}" class="text-indigo-400 hover:underline text-sm mt-2 block" target="_blank" rel="noopener noreferrer">View Document <i class="fas fa-external-link-alt ml-1"></i></a>
             </div>
         `;
         supportingDocumentsList.appendChild(docCard);
@@ -382,7 +381,7 @@ function renderSupportingDocuments(docs) {
  * Handles search input for supporting documents.
  */
 function handleDocumentSearch() {
-    const query = documentSearchInput.value.toLowerCase();
+    const query = documentSearchInput.value.toLowerCase().trim();
     const filteredType = documentTypeFilter.value;
 
     const filteredDocs = supportingDocuments.filter(doc => {
@@ -402,23 +401,29 @@ function handleDocumentFilter() {
     handleDocumentSearch(); // Re-run search with new filter
 }
 
-// --- Vertical Timeline Functions (Adapted from Flamea) ---
+// --- Horizontal Timeline Functions ---
 
 /**
- * Populates the vertical timeline with data from history-data.js.
+ * Populates the horizontal timeline with data from history-data.js.
  */
-function createVerticalTimeline() {
-    if (!timelineScroller || typeof verticalTimelineData === 'undefined') {
-        console.error("Timeline scroller or verticalTimelineData not found for vertical timeline.");
+function createHorizontalTimeline() {
+    if (!timelineScrollerHorizontal || typeof verticalTimelineData === 'undefined') {
+        console.error("Timeline scroller or verticalTimelineData not found for horizontal timeline.");
         return;
     }
 
-    timelineScroller.innerHTML = ''; // Clear any existing placeholders
+    timelineScrollerHorizontal.innerHTML = ''; // Clear any existing placeholders
 
     verticalTimelineData.forEach(item => {
         const point = document.createElement('div');
-        point.className = 'timeline-point';
-        point.innerHTML = `<div class="timeline-dot"></div><div class="timeline-content"><div class="date">${item.date}</div><div class="event">${item.event}</div></div>`;
+        point.className = 'timeline-h-point'; // Use new class for horizontal points
+        point.innerHTML = `
+            <div class="timeline-h-dot"></div>
+            <div class="timeline-h-content">
+                <div class="date">${item.date}</div>
+                <div class="event">${item.event}</div>
+            </div>
+        `;
 
         point.addEventListener('click', () => {
             modalTitle.textContent = `${item.date}: ${item.event}`;
@@ -426,16 +431,16 @@ function createVerticalTimeline() {
 
             // Handle primary source link
             modalPrimarySource.innerHTML = item.primarySource.startsWith('http')
-                ? `<a href="${item.primarySource}" target="_blank" rel="noopener noreferrer" class="text-teal-400 hover:underline">${new URL(item.primarySource).hostname}</a>`
+                ? `<a href="${item.primarySource}" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:underline">${new URL(item.primarySource).hostname}</a>`
                 : item.primarySource;
 
             // Handle secondary source link
             modalSecondarySource.innerHTML = item.secondarySource.startsWith('http')
-                ? `<a href="${item.secondarySource}" target="_blank" rel="noopener noreferrer" class="text-teal-400 hover:underline">${new URL(item.secondarySource).hostname}</a>`
+                ? `<a href="${item.secondarySource}" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:underline">${new URL(item.secondarySource).hostname}</a>`
                 : item.secondarySource;
 
             timelineModal.classList.add('visible');
         });
-        timelineScroller.appendChild(point);
+        timelineScrollerHorizontal.appendChild(point);
     });
 }
