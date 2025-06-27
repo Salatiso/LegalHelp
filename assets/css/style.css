@@ -3,16 +3,31 @@ html, body {
     height: 100%;
     overflow: hidden; /* Prevent overall page scrolling */
     font-family: 'Open Sans', sans-serif;
-    background-color: #1a202c; /* Fallback background color */
+    background-color: #1a202c; /* Fallback background color if no video/svg */
     color: #e5e7eb; /* Base text color */
 
-    /* South African Flag Background (Base64 encoded SVG) */
+    /* South African Flag SVG Background (Fallback for video) */
     /* This is a simplified representation for embedding. A full, accurate SVG is very long. */
     /* In a real project, a precise, minified base64 SVG of the actual flag would be used here. */
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNjAwIj4NCiAgPHJlY3QgZmlsbD0iIzAwMTQ4OSIgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiLz4NCiAgPHJlY3QgZmlsbD0iI0UwM0MzMSIgd2lkdGg9IjkwMCIgaGVpZ2h0PSIzMDAiLz4NCiAgPHBhdGggZmlsbD0iIzAwNzY0NyIgZD0iTTAgMHY2MDBsNDUwLTMwMHoiLz4NCiAgPHBhdGggZmlsbD0iI0ZGMkQyNyIgZD0iTTAgMHY2MDBsNDUwLTMwMHoiIHRyYW5zZm9ybT0ic2NhbGUoMC45KSB0cmFuc2xhdGUoMjUgMzMpIi8+DQogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0wIDB2NjAwbDQ1MC0zMDB6IiB0cmFuc2Zvcm09InNjYWxlKDAuOCkgdHJhbnNsYXRlKDUwIDY2KSIvPg0KICA8cGF0aCBmaWxsPSIjMDAwMDAwIiBkPSJNMCAwvjYwMGw0NTAtMDB6IiB0cmFuc2Zvcm09InNjYWxlKDAuNykgdHJhbnNsYXRlKDc1IDk5KSIvPg0KPC9zdmc+");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+}
+
+/* Video Background Styling */
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100; /* Behind all content */
+    background-size: cover;
+    overflow: hidden;
+    filter: brightness(0.6) grayscale(0.3); /* Slightly darken and desaturate for readability */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -27,18 +42,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Main content area (excluding header/footer) that should scroll */
-.main-content-scrollable,.main-content-area {
+.main-content-scrollable,.main-content-area,.main-container {
     flex-grow: 1; /* Allows it to take up available vertical space */
     overflow-y: auto; /* Enables scrolling for the entire main content area */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     padding: 1rem; /* Overall padding */
-    background-color: rgba(16, 11, 33, 0.9); /* Deep indigo/purple background with transparency for flag */
+    background-color: rgba(16, 11, 33, 0.8); /* Deep indigo/purple background with transparency for flag/video */
     color: #e5e7eb; /* Light text color for contrast */
     max-width: 1200px; /* Consistent max width for content */
     margin: 0 auto; /* Center content */
 }
 @media (min-width: 1024px) {
-   .main-content-scrollable,.main-content-area {
+  .main-content-scrollable,.main-content-area,.main-container {
         padding: 2rem; /* More padding for desktop */
     }
 }
@@ -70,7 +85,7 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 @media (min-width: 768px) {
-   .hero-gradient h1,.hero-constitution h1,.hero-statutes h1,.hero-caselaw h1,.hero-updates h1 {
+  .hero-gradient h1,.hero-constitution h1,.hero-statutes h1,.hero-caselaw h1,.hero-updates h1 {
         font-size: 4rem;
     }
 }
@@ -313,7 +328,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 auto; /* Center content */
 }
 @media (min-width: 1024px) {
-   .desktop-two-column-grid {
+  .desktop-two-column-grid {
         grid-template-columns: 2.5fr 1.5fr; /* Content and Timeline */
     }
 }
