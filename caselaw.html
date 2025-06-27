@@ -25,10 +25,9 @@
             margin: 0 auto;
         }
         .hero-caselaw {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%),
-                              url('https://placehold.co/1200x400/1a202c/e5e7eb?text=Case+Law'); /* Placeholder for caselaw image */
-            background-size: cover;
-            background-position: center;
+            background-color: #1a202c;
+            position: relative;
+            overflow: hidden;
             min-height: 300px;
             display: flex;
             align-items: center;
@@ -40,6 +39,27 @@
             padding: 2rem;
             color: #e5e7eb;
             margin-bottom: 2rem;
+            z-index: 0;
+        }
+        .hero-caselaw-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
+            filter: grayscale(100%) brightness(0.5);
+        }
+        .hero-caselaw h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .hero-caselaw h1 {
+                font-size: 4rem;
+            }
         }
         .section-card-dark {
             background-color: #1f2937;
@@ -51,6 +71,11 @@
         }
         .input-dark, .select-dark {
             @apply bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2;
+        }
+        /* Fix for dropdown text color */
+        .select-dark option {
+            background-color: #1f2937; /* Dark background for options */
+            color: #e5e7eb; /* Light text color for options */
         }
         .case-card {
             @apply bg-gray-700 p-4 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-200 flex flex-col;
@@ -71,6 +96,14 @@
 
     <main class="main-content-area">
         <section class="hero-caselaw w-full px-4">
+            <svg class="hero-caselaw-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Abstract gavel/court symbol for Case Law -->
+                <path d="M30 80 L70 80 L70 70 L30 70 Z" fill="#6366f1" opacity="0.6"/> <!-- Base -->
+                <path d="M50 70 L50 20" stroke="#4f46e5" stroke-width="2"/> <!-- Handle -->
+                <path d="M30 25 Q50 5 70 25" stroke="#a5b4fc" stroke-width="2"/> <!-- Head top curve -->
+                <path d="M30 25 L50 45 L70 25" fill="#a5b4fc" opacity="0.6"/> <!-- Head fill -->
+                <path d="M25 28 L30 25 L50 45 L70 25 L75 28 L50 50 Z" fill="#6366f1" opacity="0.6"/> <!-- Shadow/depth -->
+            </svg>
             <h1 class="text-4xl md:text-5xl font-bold font-roboto-slab mb-4">Case Law & Judgments</h1>
             <p class="text-lg md:text-xl max-w-2xl text-indigo-100">Explore landmark court decisions and legal precedents that shape the South African legal landscape.</p>
         </section>

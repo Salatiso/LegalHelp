@@ -2,16 +2,18 @@
  * @fileoverview
  * This file contains the JavaScript logic for the LegalHelp Constitution page.
  * It handles constitution search, section display via tabs and search,
- * supporting document filtering, and the interactive horizontal historical timeline.
+ * supporting document filtering, the interactive vertical historical timeline,
+ * and the new quiz functionality.
  */
 
 import { constitutionContent, supportingDocuments } from './constitution-data.js';
-import { verticalTimelineData } from './history-data.js'; // Note: Renamed in usage for clarity, but variable name remains consistent
+import { verticalTimelineData } from './history-data.js';
+import { quizzes } from './constitution-quizzes.js';
 
 // --- DOM Elements ---
 const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
 const startExploringButton = document.getElementById('start-exploring-button');
-const constitutionViewerSection = document.getElementById('constitution-viewer-section'); // New ID to scroll to
+const constitutionViewerSection = document.getElementById('constitution-viewer-section'); // Section to scroll to
 
 const constitutionSearchInput = document.getElementById('constitution-search-input');
 const constitutionTabsContainer = document.getElementById('constitution-tabs');
@@ -19,12 +21,14 @@ const constitutionDisplayArea = document.getElementById('constitution-display-ar
 const constitutionSectionTitle = document.getElementById('constitution-section-title');
 const constitutionSectionContent = document.getElementById('constitution-section-content');
 const printConstitutionButton = document.getElementById('print-constitution-button');
+const viewPdfButton = document.getElementById('view-pdf-button');
+const takeQuizButton = document.getElementById('take-quiz-button');
 
 const documentSearchInput = document.getElementById('document-search-input');
 const documentTypeFilter = document.getElementById('document-type-filter');
 const supportingDocumentsList = document.getElementById('supporting-documents-list');
 
-const timelineScrollerHorizontal = document.getElementById('timeline-scroller-horizontal'); // Changed ID for horizontal
+const timelineScrollerVertical = document.getElementById('timeline-scroller-vertical'); // Corrected ID for vertical timeline
 const timelineModal = document.getElementById('timeline-modal');
 const modalTitle = document.getElementById('modal-title');
 const modalDetails = document.getElementById('modal-details');
@@ -32,11 +36,23 @@ const modalPrimarySource = document.getElementById('modal-primary-source');
 const modalSecondarySource = document.getElementById('modal-secondary-source');
 const closeModalBtn = document.querySelector('.modal-close');
 
+// Quiz Modal Elements
+const quizModal = document.getElementById('quiz-modal');
+const quizModalCloseBtn = document.getElementById('quiz-modal-close');
+const quizTitle = document.getElementById('quiz-title');
+const quizContainer = document.getElementById('quiz-container');
+const nextQuestionButton = document.getElementById('next-question-button');
+const restartQuizButton = document.getElementById('restart-quiz-button');
+
 let activeChapterId = 'preamble'; // Keep track of the currently active chapter tab
+let currentQuiz = null;
+let currentQuestionIndex = 0;
+let userScore = 0;
+let selectedAnswer = null; // To store the user's selected option in quiz
 
 // --- Initialization on DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load Sidebar (assuming main.js or a dedicated function handles this)
+    // Load Sidebar
     try {
         const response = await fetch('header.html');
         if (response.ok) {
@@ -52,21 +68,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateConstitutionTabs();
     displayConstitutionContent('preamble'); // Display preamble by default
     renderSupportingDocuments(supportingDocuments); // Display all documents initially
-    createHorizontalTimeline(); // Call the new horizontal timeline function
+    createVerticalTimeline(); // Call the vertical timeline function
 
     // --- Event Listeners ---
     startExploringButton.addEventListener('click', () => {
-        // Scroll to the interactive viewer section smoothly
         constitutionViewerSection.scrollIntoView({ behavior: 'smooth' });
     });
 
     constitutionSearchInput.addEventListener('input', handleConstitutionSearch);
     printConstitutionButton.addEventListener('click', printCurrentSection);
+    viewPdfButton.addEventListener('click', handleViewPdf); // New PDF button listener
+    takeQuizButton.addEventListener('click', handleTakeQuiz); // New Quiz button listener
 
     documentSearchInput.addEventListener('input', handleDocumentSearch);
     documentTypeFilter.addEventListener('change', handleDocumentFilter);
 
-    // Modal close functionality for timeline
+    // Timeline Modal close functionality
     if (timelineModal) {
         closeModalBtn.addEventListener('click', () => timelineModal.classList.remove('visible'));
         timelineModal.addEventListener('click', (e) => {
@@ -74,6 +91,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 timelineModal.classList.remove('visible');
             }
         });
+    }
+
+    // Quiz Modal close functionality
+    if (quizModal) {
+        quizModalCloseBtn.addEventListener('click', () => quizModal.classList.remove('visible'));
+        quizModal.addEventListener('click', (e) => {
+            if (e.target === quizModal) {
+                quizModal.classList.remove('visible');
+            }
+        });
+        nextQuestionButton.addEventListener('click', handleNextQuestion);
+        restartQuizButton.addEventListener('click', handleRestartQuiz);
     }
 });
 
@@ -89,9 +118,9 @@ function populateConstitutionTabs() {
     // Add Preamble as the first tab
     const preambleTab = document.createElement('a');
     preambleTab.href = "#";
-    preambleTab.className = 'tab-link'; // Initial class, active status will be set by displayConstitutionContent
+    preambleTab.className = 'tab-link';
     preambleTab.dataset.chapterId = 'preamble';
-    preambleTab.innerHTML = 'Preamble';
+    preambleTab.textContent = 'Preamble'; // Use textContent for plain text
     preambleTab.addEventListener('click', (e) => {
         e.preventDefault();
         displayConstitutionContent('preamble');
@@ -102,9 +131,9 @@ function populateConstitutionTabs() {
     constitutionContent.forEach(chapter => {
         const tab = document.createElement('a');
         tab.href = "#";
-        tab.className = 'tab-link tab-link-inactive'; // Inactive by default
+        tab.className = 'tab-link tab-link-inactive';
         tab.dataset.chapterId = chapter.id;
-        tab.innerHTML = `${chapter.title}`;
+        tab.textContent = chapter.title; // Use textContent for plain text
         tab.addEventListener('click', (e) => {
             e.preventDefault();
             displayConstitutionContent(chapter.id);
@@ -116,12 +145,14 @@ function populateConstitutionTabs() {
 /**
  * Displays content for a specific chapter or section.
  * Handles both chapter-level and individual section display.
+ * Also manages visibility of the 'Take Quiz' button.
  * @param {string} id - The ID of the chapter or section to display.
  * @param {string} [highlightQuery=''] - Optional query to highlight in the content.
  */
 function displayConstitutionContent(id, highlightQuery = '') {
     let contentHtml = '';
     let titleText = '';
+    let currentSectionQuizId = null; // To check if a quiz exists for this section
 
     // Deactivate all tabs first
     document.querySelectorAll('.tab-link').forEach(tab => {
@@ -146,6 +177,7 @@ function displayConstitutionContent(id, highlightQuery = '') {
         document.querySelector(`.tab-link[data-chapter-id="preamble"]`).classList.remove('tab-link-inactive');
         document.querySelector(`.tab-link[data-chapter-id="preamble"]`).classList.add('tab-link-active');
         activeChapterId = 'preamble';
+        currentSectionQuizId = 'preamble'; // Check for preamble quiz
     } else {
         // Find chapter or section
         let foundItem = null;
@@ -164,6 +196,7 @@ function displayConstitutionContent(id, highlightQuery = '') {
             document.querySelector(`.tab-link[data-chapter-id="${id}"]`).classList.remove('tab-link-inactive');
             document.querySelector(`.tab-link[data-chapter-id="${id}"]`).classList.add('tab-link-active');
             activeChapterId = id;
+            currentSectionQuizId = id; // Check for chapter quiz
 
         } else {
             // If not a chapter, search for a specific section
@@ -178,6 +211,7 @@ function displayConstitutionContent(id, highlightQuery = '') {
                     document.querySelector(`.tab-link[data-chapter-id="${chap.id}"]`).classList.remove('tab-link-inactive');
                     document.querySelector(`.tab-link[data-chapter-id="${chap.id}"]`).classList.add('tab-link-active');
                     activeChapterId = chap.id;
+                    currentSectionQuizId = section.id; // Check for specific section quiz
                     break;
                 }
             }
@@ -191,6 +225,21 @@ function displayConstitutionContent(id, highlightQuery = '') {
 
     constitutionSectionTitle.textContent = titleText;
     constitutionSectionContent.innerHTML = highlightMatches(contentHtml, highlightQuery);
+
+    // Update PDF button href based on the current chapter/section
+    const currentPdfUrl = constitutionContent.find(c => c.id === activeChapterId)?.pdfUrl || '#'; // Get PDF URL from chapter
+    viewPdfButton.href = currentPdfUrl;
+    viewPdfButton.style.display = (currentPdfUrl !== '#') ? 'flex' : 'none'; // Show/hide PDF button
+
+    // Show/hide Quiz button based on whether a quiz exists for the current section/chapter
+    if (quizzes[currentSectionQuizId]) {
+        takeQuizButton.style.display = 'flex';
+        takeQuizButton.dataset.quizId = currentSectionQuizId;
+    } else {
+        takeQuizButton.style.display = 'none';
+        takeQuizButton.removeAttribute('data-quiz-id');
+    }
+
 
     // Add event listeners for dynamically created section links (if any)
     document.querySelectorAll('.view-section-link').forEach(link => {
@@ -238,7 +287,6 @@ function handleConstitutionSearch() {
             chapterId: 'preamble'
         });
     }
-
 
     constitutionContent.forEach(chapter => {
         chapter.sections.forEach(section => {
@@ -344,6 +392,20 @@ function printCurrentSection() {
     printWindow.close();
 }
 
+/**
+ * Handles the click event for the View PDF button.
+ * Opens the relevant Constitution PDF.
+ */
+function handleViewPdf() {
+    // The href is already set in displayConstitutionContent, just need to ensure it's a valid link
+    if (viewPdfButton.href && viewPdfButton.href !== window.location.href + '#') { // Check if it's not just '#'
+        window.open(viewPdfButton.href, '_blank');
+    } else {
+        console.warn('No specific PDF URL available for this section.');
+        // Optionally, display a message to the user that PDF is not available for this section
+    }
+}
+
 
 // --- Supporting Documents Functions ---
 
@@ -401,29 +463,23 @@ function handleDocumentFilter() {
     handleDocumentSearch(); // Re-run search with new filter
 }
 
-// --- Horizontal Timeline Functions ---
+// --- Vertical Timeline Functions ---
 
 /**
- * Populates the horizontal timeline with data from history-data.js.
+ * Populates the vertical timeline with data from history-data.js.
  */
-function createHorizontalTimeline() {
-    if (!timelineScrollerHorizontal || typeof verticalTimelineData === 'undefined') {
-        console.error("Timeline scroller or verticalTimelineData not found for horizontal timeline.");
+function createVerticalTimeline() {
+    if (!timelineScrollerVertical || typeof verticalTimelineData === 'undefined') {
+        console.error("Timeline scroller or verticalTimelineData not found for vertical timeline.");
         return;
     }
 
-    timelineScrollerHorizontal.innerHTML = ''; // Clear any existing placeholders
+    timelineScrollerVertical.innerHTML = ''; // Clear any existing placeholders
 
     verticalTimelineData.forEach(item => {
         const point = document.createElement('div');
-        point.className = 'timeline-h-point'; // Use new class for horizontal points
-        point.innerHTML = `
-            <div class="timeline-h-dot"></div>
-            <div class="timeline-h-content">
-                <div class="date">${item.date}</div>
-                <div class="event">${item.event}</div>
-            </div>
-        `;
+        point.className = 'timeline-point';
+        point.innerHTML = `<div class="timeline-dot"></div><div class="timeline-content"><div class="date">${item.date}</div><div class="event">${item.event}</div></div>`;
 
         point.addEventListener('click', () => {
             modalTitle.textContent = `${item.date}: ${item.event}`;
@@ -441,6 +497,137 @@ function createHorizontalTimeline() {
 
             timelineModal.classList.add('visible');
         });
-        timelineScrollerHorizontal.appendChild(point);
+        timelineScrollerVertical.appendChild(point);
     });
 }
+
+// --- Quiz Functions ---
+
+/**
+ * Initiates a quiz for the currently displayed section.
+ */
+function handleTakeQuiz() {
+    const quizId = takeQuizButton.dataset.quizId;
+    currentQuiz = quizzes[quizId];
+
+    if (!currentQuiz) {
+        console.error(`Quiz for ID "${quizId}" not found.`);
+        return;
+    }
+
+    currentQuestionIndex = 0;
+    userScore = 0;
+    selectedAnswer = null; // Reset selection
+
+    quizModal.classList.add('visible');
+    nextQuestionButton.textContent = 'Next Question';
+    nextQuestionButton.style.display = 'block';
+    restartQuizButton.style.display = 'none';
+
+    displayQuizQuestion();
+}
+
+/**
+ * Displays the current quiz question.
+ */
+function displayQuizQuestion() {
+    if (currentQuestionIndex < currentQuiz.questions.length) {
+        const questionData = currentQuiz.questions[currentQuestionIndex];
+        quizTitle.textContent = `Quiz: ${currentQuiz.title} (Question ${currentQuestionIndex + 1} of ${currentQuiz.questions.length})`;
+        quizContainer.innerHTML = `
+            <p class="text-lg font-semibold mb-4">${questionData.question}</p>
+            <div id="quiz-options" class="flex flex-col gap-3">
+                ${questionData.options.map((option, index) => `
+                    <button class="quiz-option" data-option-index="${index}">
+                        ${option}
+                    </button>
+                `).join('')}
+            </div>
+            <div id="quiz-feedback" class="mt-4 text-center hidden"></div>
+        `;
+
+        document.querySelectorAll('.quiz-option').forEach(button => {
+            button.addEventListener('click', handleOptionSelect);
+        });
+
+        // Reset next button state
+        nextQuestionButton.disabled = true;
+        nextQuestionButton.classList.add('opacity-50', 'cursor-not-allowed');
+        selectedAnswer = null;
+    } else {
+        // Quiz finished
+        quizTitle.textContent = `Quiz: ${currentQuiz.title} - Results`;
+        quizContainer.innerHTML = `
+            <p class="text-xl font-bold text-center text-indigo-300 mb-4">Quiz Completed!</p>
+            <p class="text-lg text-center">You scored: ${userScore} out of ${currentQuiz.questions.length}</p>
+            <div id="quiz-summary" class="mt-4 text-center"></div>
+        `;
+        nextQuestionButton.style.display = 'none';
+        restartQuizButton.style.display = 'block';
+
+        // Optionally, add a summary of correct/incorrect answers
+        const summaryDiv = document.getElementById('quiz-summary');
+        currentQuiz.questions.forEach((q, i) => {
+            const resultClass = q.userAnswer === q.answer ? 'text-green-400' : 'text-red-400';
+            summaryDiv.innerHTML += `<p class="${resultClass}">${i + 1}. ${q.question} <br> <em>Your answer: ${q.options[q.userAnswer]}, Correct: ${q.options[q.answer]}</em></p>`;
+        });
+    }
+}
+
+/**
+ * Handles user selecting an option in the quiz.
+ * @param {Event} event - The click event.
+ */
+function handleOptionSelect(event) {
+    if (selectedAnswer !== null) return; // Prevent changing answer after selection
+
+    const selectedOptionButton = event.target;
+    selectedAnswer = parseInt(selectedOptionButton.dataset.optionIndex);
+    const feedbackDiv = document.getElementById('quiz-feedback');
+    const currentQuestionData = currentQuiz.questions[currentQuestionIndex];
+
+    // Disable all options and remove hover effects
+    document.querySelectorAll('.quiz-option').forEach(button => {
+        button.disabled = true;
+        button.classList.remove('hover:bg-gray-600');
+    });
+
+    selectedOptionButton.classList.add('selected'); // Highlight selected
+
+    currentQuestionData.userAnswer = selectedAnswer; // Store user's answer
+
+    if (selectedAnswer === currentQuestionData.answer) {
+        userScore++;
+        selectedOptionButton.classList.add('correct');
+        feedbackDiv.innerHTML = `<p class="text-green-400 font-semibold">Correct! <i class="fas fa-check-circle"></i></p><p class="text-gray-300 text-sm mt-1">${currentQuestionData.explanation}</p>`;
+    } else {
+        selectedOptionButton.classList.add('incorrect');
+        // Highlight the correct answer as well
+        document.querySelector(`.quiz-option[data-option-index="${currentQuestionData.answer}"]`).classList.add('correct');
+        feedbackDiv.innerHTML = `<p class="text-red-400 font-semibold">Incorrect. <i class="fas fa-times-circle"></i></p><p class="text-gray-300 text-sm mt-1">${currentQuestionData.explanation}</p>`;
+    }
+
+    feedbackDiv.classList.remove('hidden');
+    nextQuestionButton.disabled = false;
+    nextQuestionButton.classList.remove('opacity-50', 'cursor-not-allowed');
+}
+
+/**
+ * Advances to the next quiz question or ends the quiz.
+ */
+function handleNextQuestion() {
+    if (selectedAnswer === null && currentQuestionIndex < currentQuiz.questions.length) {
+        // User must select an answer before proceeding, unless it's the end of quiz
+        return;
+    }
+    currentQuestionIndex++;
+    displayQuizQuestion();
+}
+
+/**
+ * Restarts the current quiz.
+ */
+function handleRestartQuiz() {
+    handleTakeQuiz(); // Simply call handleTakeQuiz again to restart
+}
+

@@ -6,7 +6,7 @@
     
     <nav class="hidden lg:flex items-center bg-gray-800/80 rounded-full px-2 py-1 shadow-lg">
         <!-- Navigation Links to separate pages -->
-        <a href="index.html" class="nav-link active" data-section="0" data-translate-key="nav.home">Home</a>
+        <a href="index.html" class="nav-link" data-translate-key="nav.home">Home</a>
         <a href="constitution.html" class="nav-link" data-translate-key="nav.constitution">Constitution</a>
         <a href="statutes.html" class="nav-link" data-translate-key="nav.statutes">Statutes & Acts</a>
         <a href="caselaw.html" class="nav-link" data-translate-key="nav.caselaw">Case Law</a>
@@ -53,17 +53,18 @@
             link.classList.remove('active'); // Remove active from all first
 
             const linkHref = link.getAttribute('href');
-            const linkPage = linkHref.split('/').pop().split('#')[0]; // Get the page name from href
+            // Extract the page name from the href, handling potential hash links for index.html
+            const linkPage = linkHref.split('/').pop().split('#')[0]; 
 
+            // If the link's page matches the current page
             if (linkPage === currentPath) {
                 link.classList.add('active');
-            }
-            // Special handling for index.html as it also has hash links
+            } 
+            // Special handling for the home page (index.html or root path)
             if (currentPath === 'index.html' || currentPath === '') {
-                 if (linkHref.startsWith('index.html#home')) {
+                 // If it's the home link (index.html or index.html#home)
+                 if (linkHref === 'index.html' || linkHref.startsWith('index.html#home')) {
                      link.classList.add('active');
-                 } else if (linkHref === 'index.html' && currentPath === '') {
-                    link.classList.add('active');
                  }
             }
         });
