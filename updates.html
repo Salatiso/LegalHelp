@@ -9,23 +9,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
     <style>
+        /* Ensure html and body take full height and prevent main page scrolling */
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Prevent overall page scrolling */
+        }
         body {
             font-family: 'Open Sans', sans-serif;
-            background-color: #1a202c;
-            color: #e5e7eb;
+            background-color: #1a202c; /* Base dark background */
+            color: #e5e7eb; /* Base text color */
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Roboto Slab', serif;
         }
+        /* Main content area that should scroll */
         .main-content-area {
-            min-height: calc(100vh - 80px);
-            padding: 2rem;
-            background-color: #1f2937;
-            max-width: 1200px;
-            margin: 0 auto;
+            flex-grow: 1; /* Allows it to take up available vertical space */
+            overflow-y: auto; /* Enables scrolling for the entire main content area */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            padding: 2rem; /* Overall padding */
+            background-color: #100b21; /* Deep indigo/purple background to match index.html vibrant theme */
+            max-width: 1200px; /* Max width for content */
+            margin: 0 auto; /* Center content */
         }
         .hero-updates {
-            background-color: #1a202c;
+            background: linear-gradient(to bottom right, #4f46e5, #6366f1); /* Vibrant gradient from index.html */
             position: relative;
             overflow: hidden;
             min-height: 300px;
@@ -62,26 +70,26 @@
             }
         }
         .section-card-dark {
-            background-color: #1f2937;
+            background-color: #1e153b; /* A slightly lighter indigo/purple for cards */
             border-radius: 0.75rem;
             padding: 1.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             margin-bottom: 1.5rem;
-            border: 1px solid #374151;
+            border: 1px solid #4f46e5; /* Indigo-600 border for cards */
         }
         .input-dark, .select-dark {
-            @apply bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2;
+            @apply bg-indigo-900 text-white placeholder-indigo-300 border border-indigo-600 rounded-lg focus:ring-indigo-400 focus:border-indigo-400 p-2;
         }
         /* Fix for dropdown text color */
         .select-dark option {
-            background-color: #1f2937; /* Dark background for options */
+            background-color: #1e153b; /* Darker vibrant background for options */
             color: #e5e7eb; /* Light text color for options */
         }
         .update-card {
-            @apply bg-gray-700 p-4 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-200 flex flex-col;
+            @apply bg-indigo-800 p-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 flex flex-col;
         }
         .update-card .date {
-            @apply text-sm text-gray-400 mb-2;
+            @apply text-sm text-indigo-200 mb-2;
         }
         .update-card .tag {
             @apply bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded-full;
@@ -137,7 +145,7 @@
                 <div class="update-card">
                     <p class="date">25 June 2024</p>
                     <h3 class="text-xl font-semibold text-yellow-300 mb-2">New Cybercrimes Act Regulations Gazetted</h3>
-                    <p class="text-gray-300 text-sm flex-grow">The latest regulations for the Cybercrimes Act have been published, detailing implementation procedures for enforcement and compliance.</p>
+                    <p class="text-indigo-100 text-sm flex-grow">The latest regulations for the Cybercrimes Act have been published, detailing implementation procedures for enforcement and compliance.</p>
                     <div class="mt-3 flex flex-wrap gap-2">
                         <span class="tag">New Law</span>
                         <span class="tag">Cybercrime</span>
@@ -147,7 +155,7 @@
                 <div class="update-card">
                     <p class="date">18 June 2024</p>
                     <h3 class="text-xl font-semibold text-yellow-300 mb-2">Amendment to Labour Relations Act Passed</h3>
-                    <p class="text-gray-300 text-sm flex-grow">Parliament passes an amendment clarifying collective bargaining procedures and addressing minor inconsistencies in the Labour Relations Act.</p>
+                    <p class="text-indigo-100 text-sm flex-grow">Parliament passes an amendment clarifying collective bargaining procedures and addressing minor inconsistencies in the Labour Relations Act.</p>
                     <div class="mt-3 flex flex-wrap gap-2">
                         <span class="tag">Amendment</span>
                         <span class="tag">Labour Law</span>
@@ -157,7 +165,7 @@
                 <div class="update-card">
                     <p class="date">10 June 2024</p>
                     <h3 class="text-xl font-semibold text-yellow-300 mb-2">Public Consultation on Environmental Bill</h3>
-                    <p class="text-gray-300 text-sm flex-grow">Invitation for public comments on the proposed new Environmental Management Bill, aiming to strengthen conservation efforts.</p>
+                    <p class="text-indigo-100 text-sm flex-grow">Invitation for public comments on the proposed new Environmental Management Bill, aiming to strengthen conservation efforts.</p>
                     <div class="mt-3 flex flex-wrap gap-2">
                         <span class="tag">Public Notice</span>
                         <span class="tag">Environmental Law</span>
@@ -168,19 +176,6 @@
             </div>
         </section>
     </main>
-
-    <footer class="flex justify-center bg-gray-900 py-10 border-t border-gray-700">
-        <div class="flex max-w-[960px] flex-1 flex-col">
-            <div class="flex flex-col gap-6 px-5 py-5 text-center @container">
-                <div class="flex flex-wrap items-center justify-center gap-6 @[480px]:flex-row @[480px]:justify-around mt-8">
-                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Terms of Service</a>
-                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Privacy Policy</a>
-                    <a class="text-gray-400 text-base font-normal leading-normal min-w-40 hover:text-gray-200" href="#">Contact Us</a>
-                </div>
-                <p class="text-gray-400 text-base font-normal leading-normal">© 2024 LegalHelp. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
         // Script to load header.html into sidebar-placeholder

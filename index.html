@@ -8,6 +8,74 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Ensure html and body take full height and prevent main page scrolling */
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Prevent overall page scrolling */
+        }
+        /* Make app-shell a flex container that grows to fill height */
+        .app-shell {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Main container should scroll if content overflows */
+        .main-container {
+            flex-grow: 1; /* Allow to take available space */
+            overflow-y: auto; /* Enable vertical scrolling within this container */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            padding: 2rem; /* Add padding consistent with content areas */
+            max-width: 1200px; /* Max width for content */
+            margin: 0 auto; /* Center content */
+            background-color: #1a202c; /* Base dark background, will be overridden by section backgrounds */
+            color: #e5e7eb; /* Base text color */
+        }
+
+        /* Specific styles for the hero gradient on index.html */
+        .hero-gradient {
+            background: linear-gradient(to bottom right, #4f46e5, #6366f1, #a5b4fc); /* Vibrant gradient from original */
+            padding: 4rem 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem; /* Consistent spacing */
+        }
+        .hero-gradient h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+        }
+        @media (min-width: 768px) {
+            .hero-gradient h1 {
+                font-size: 4rem;
+            }
+        }
+        .section {
+             /* Ensure sections within main-container fill width properly */
+            width: 100%;
+            margin-bottom: 2rem; /* Consistent spacing */
+        }
+        /* Styling for the info cards on index.html */
+        .index-info-card {
+            background-color: rgba(31, 41, 55, 0.7); /* Darker semi-transparent background */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(55, 65, 81, 0.5); /* Semi-transparent border */
+        }
+        /* Buttons consistent with vibrant theme */
+        .btn-vibrant-primary {
+            @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200;
+        }
+        .btn-vibrant-secondary {
+            @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg;
+        }
+        .search-input-index {
+            @apply w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition;
+        }
+        .search-button-index {
+            @apply absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,42 +84,40 @@
     <div class="app-shell">
         <div id="mainContainer" class="main-container">
             <!-- Section 1: Home -->
-            <section class="section hero-gradient text-white">
-                <div class="text-center max-w-4xl">
-                    <i class="fas fa-balance-scale text-6xl text-indigo-200 mb-6"></i>
-                    <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4" data-translate-key="home.title">The Law, Demystified.</h1>
-                    <p class="text-xl text-indigo-200 mb-8" data-translate-key="home.subtitle">Your comprehensive, single-view archive of South African legislation.</p>
-                    <div class="relative max-w-xl mx-auto">
-                        <input type="search" placeholder="Search any Act, case, or section..." class="w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition" data-translate-key="home.search_placeholder" placeholder-key="home.search_placeholder">
-                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center"><i class="fas fa-search text-xl"></i></button>
+            <section class="section hero-gradient text-white text-center max-w-4xl mx-auto">
+                <i class="fas fa-balance-scale text-6xl text-indigo-200 mb-6"></i>
+                <h1 class="text-5xl md:text-6xl font-black font-roboto-slab mb-4" data-translate-key="home.title">The Law, Demystified.</h1>
+                <p class="text-xl text-indigo-200 mb-8" data-translate-key="home.subtitle">Your comprehensive, single-view archive of South African legislation.</p>
+                <div class="relative max-w-xl mx-auto">
+                    <input type="search" placeholder="Search any Act, case, or section..." class="search-input-index" data-translate-key="home.search_placeholder" placeholder-key="home.search_placeholder">
+                    <button class="search-button-index"><i class="fas fa-search text-xl"></i></button>
+                </div>
+                <p class="mt-8 text-indigo-200" data-translate-key="home.swipe_prompt">Use navigation or swipe to explore</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left index-info-card mt-8">
+                    <div>
+                        <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.api_title">Is There an Automated API?</h3>
+                        <p class="text-gray-300" data-translate-key="updates.api_desc">Currently, the South African government does not provide a centralized, real-time API for legislation updates. This makes automatic tracking a significant challenge.</p>
                     </div>
-                     <p class="mt-8 text-indigo-200" data-translate-key="home.swipe_prompt">Use navigation or swipe to explore</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-gray-900/50 p-6 rounded-lg">
-                        <div>
-                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.api_title">Is There an Automated API?</h3>
-                            <p class="text-gray-300" data-translate-key="updates.api_desc">Currently, the South African government does not provide a centralized, real-time API for legislation updates. This makes automatic tracking a significant challenge.</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.gazette_title">The Government Gazette</h3>
-                            <p class="text-gray-300" data-translate-key="updates.gazette_desc">All new Acts, amendments, and regulations are published in the Government Gazette. It is typically published **every Friday**, though special editions can be released any day. This is the official source of truth.</p>
-                        </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-white mb-2" data-translate-key="updates.gazette_title">The Government Gazette</h3>
+                        <p class="text-gray-300" data-translate-key="updates.gazette_desc">All new Acts, amendments, and regulations are published in the Government Gazette. It is typically published **every Friday**, though special editions can be released any day. This is the official source of truth.</p>
                     </div>
-                     <div class="mt-8">
-                         <a href="community.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg" data-translate-key="updates.cta">Join the Community Watch</a>
-                    </div>
+                </div>
+                <div class="mt-8">
+                    <a href="community.html" class="btn-vibrant-secondary" data-translate-key="updates.cta">Join the Community Watch</a>
                 </div>
             </section>
         </div>
     </div>
-    
+
     <!-- Floating Action Button for Chatbot -->
     <button id="open-chatbot-modal" class="fixed bottom-6 right-6 bg-purple-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-purple-700 transition-transform hover:scale-110">
         <i class="fas fa-robot"></i>
     </button>
-    
+
     <!-- Modal container -->
     <div id="modal-container"></div>
-    
+
     <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
