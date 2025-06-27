@@ -62,8 +62,8 @@
             } 
             // Special handling for the home page (index.html or root path)
             if (currentPath === 'index.html' || currentPath === '') {
-                 // If it's the home link (index.html or index.html#home)
-                 if (linkHref === 'index.html' || linkHref.startsWith('index.html#home')) {
+                 // If it's the home link (index.html)
+                 if (linkHref === 'index.html' ) {
                      link.classList.add('active');
                  }
             }
