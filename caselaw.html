@@ -8,96 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-    <style>
-        /* Ensure html and body take full height and prevent main page scrolling */
-        html, body {
-            height: 100%;
-            overflow: hidden; /* Prevent overall page scrolling */
-        }
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #1a202c; /* Base dark background */
-            color: #e5e7eb; /* Base text color */
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Roboto Slab', serif;
-        }
-        /* Main content area that should scroll */
-        .main-content-area {
-            flex-grow: 1; /* Allows it to take up available vertical space */
-            overflow-y: auto; /* Enables scrolling for the entire main content area */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            padding: 2rem; /* Overall padding */
-            background-color: #100b21; /* Deep indigo/purple background to match index.html vibrant theme */
-            max-width: 1200px; /* Max width for content */
-            margin: 0 auto; /* Center content */
-        }
-        .hero-caselaw {
-            background: linear-gradient(to bottom right, #4f46e5, #6366f1); /* Vibrant gradient from index.html */
-            position: relative;
-            overflow: hidden;
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            padding: 2rem;
-            color: #e5e7eb;
-            margin-bottom: 2rem;
-            z-index: 0;
-        }
-        .hero-caselaw-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.2;
-            filter: grayscale(100%) brightness(0.5);
-        }
-        .hero-caselaw h1 {
-            font-size: 3rem;
-            line-height: 1.2;
-            z-index: 1;
-        }
-        @media (min-width: 768px) {
-            .hero-caselaw h1 {
-                font-size: 4rem;
-            }
-        }
-        .section-card-dark {
-            background-color: #1e153b; /* A slightly lighter indigo/purple for cards */
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            margin-bottom: 1.5rem;
-            border: 1px solid #4f46e5; /* Indigo-600 border for cards */
-        }
-        .input-dark, .select-dark {
-            @apply bg-indigo-900 text-white placeholder-indigo-300 border border-indigo-600 rounded-lg focus:ring-indigo-400 focus:border-indigo-400 p-2;
-        }
-        /* Fix for dropdown text color */
-        .select-dark option {
-            background-color: #1e153b; /* Darker vibrant background for options */
-            color: #e5e7eb; /* Light text color for options */
-        }
-        .case-card {
-            @apply bg-indigo-800 p-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 flex flex-col;
-        }
-        .case-card .icon {
-            @apply text-5xl mb-3 text-purple-400; /* Consistent icon color */
-        }
-        .case-card a {
-            @apply text-indigo-400 hover:underline mt-4 block;
-        }
-        .btn-indigo {
-            @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-5 rounded-full transition-colors duration-200;
-        }
-    </style>
 </head>
 <body>
     <div id="sidebar-placeholder"></div>
@@ -105,13 +15,7 @@
     <main class="main-content-area">
         <section class="hero-caselaw w-full px-4">
             <svg class="hero-caselaw-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Abstract gavel/court symbol for Case Law -->
-                <path d="M30 80 L70 80 L70 70 L30 70 Z" fill="#6366f1" opacity="0.6"/> <!-- Base -->
-                <path d="M50 70 L50 20" stroke="#4f46e5" stroke-width="2"/> <!-- Handle -->
-                <path d="M30 25 Q50 5 70 25" stroke="#a5b4fc" stroke-width="2"/> <!-- Head top curve -->
-                <path d="M30 25 L50 45 L70 25" fill="#a5b4fc" opacity="0.6"/> <!-- Head fill -->
-                <path d="M25 28 L30 25 L50 45 L70 25 L75 28 L50 50 Z" fill="#6366f1" opacity="0.6"/> <!-- Shadow/depth -->
-            </svg>
+                <path d="M30 80 L70 80 L70 70 L30 70 Z" fill="#6366f1" opacity="0.6"/> <path d="M50 70 L50 20" stroke="#4f46e5" stroke-width="2"/> <path d="M30 25 Q50 5 70 25" stroke="#a5b4fc" stroke-width="2"/> <path d="M30 25 L50 45 L70 25" fill="#a5b4fc" opacity="0.6"/> <path d="M25 28 L30 25 L50 45 L70 25 L75 28 L50 50 Z" fill="#6366f1" opacity="0.6"/> </svg>
             <h1 class="text-4xl md:text-5xl font-bold font-roboto-slab mb-4">Case Law & Judgments</h1>
             <p class="text-lg md:text-xl max-w-2xl text-indigo-100">Explore landmark court decisions and legal precedents that shape the South African legal landscape.</p>
         </section>
@@ -125,19 +29,16 @@
                     <option value="constitutional">Constitutional Court</option>
                     <option value="supreme_appeal">Supreme Court of Appeal</option>
                     <option value="high_court">High Court</option>
-                    <!-- More courts will be populated by JS -->
-                </select>
+                    </select>
                 <select id="caselaw-year-filter" class="select-dark md:w-auto h-12">
                     <option value="">All Years</option>
                     <option value="2024">2024</option>
                     <option value="2023">2023</option>
                     <option value="2022">2022</option>
-                    <!-- More years will be populated by JS -->
-                </select>
+                    </select>
             </div>
 
             <div id="caselaw-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Example Case Card -->
                 <div class="case-card">
                     <i class="fas fa-balance-scale-left icon"></i>
                     <h3 class="text-xl font-semibold text-purple-300 mb-2">Ferreira v Levin NO and Others (CCT5/95)</h3>
@@ -159,8 +60,7 @@
                     <p class="text-indigo-100 text-sm flex-grow">Ruled that the common law definition of marriage was unconstitutional, leading to the legalization of same-sex marriage.</p>
                     <a href="#" target="_blank" rel="noopener noreferrer">View Judgment <i class="fas fa-external-link-alt ml-1"></i></a>
                 </div>
-                <!-- More case cards will be populated by JavaScript -->
-            </div>
+                </div>
         </section>
     </main>
 
@@ -168,8 +68,8 @@
         // Script to load header.html into sidebar-placeholder
         document.addEventListener('DOMContentLoaded', () => {
             fetch('header.html')
-                .then(response => response.text())
-                .then(html => {
+               .then(response => response.text())
+               .then(html => {
                     document.getElementById('sidebar-placeholder').innerHTML = html;
                     // Highlight active nav link based on current page
                     const path = window.location.pathname.split('/').pop();
@@ -180,7 +80,7 @@
                         }
                     });
                 })
-                .catch(error => console.error('Error loading header:', error));
+               .catch(error => console.error('Error loading header:', error));
         });
     </script>
 </body>

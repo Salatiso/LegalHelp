@@ -1,175 +1,319 @@
-/* --- Global Styles & Font Imports --- */
-body {
+/* Global Styles */
+html, body {
+    height: 100%;
+    overflow: hidden; /* Prevent overall page scrolling */
     font-family: 'Open Sans', sans-serif;
-    background-color: #030712;
-    color: #d1d5db; /* Light gray text for dark backgrounds */
-    overflow: hidden; /* CRITICAL: Disables all scrolling on the body */
+    background-color: #1a202c; /* Fallback background color */
+    color: #e5e7eb; /* Base text color */
+
+    /* South African Flag Background (Base64 encoded SVG) */
+    /* This is a simplified representation for embedding. A full, accurate SVG is very long. */
+    /* In a real project, a precise, minified base64 SVG of the actual flag would be used here. */
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNjAwIj4NCiAgPHJlY3QgZmlsbD0iIzAwMTQ4OSIgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiLz4NCiAgPHJlY3QgZmlsbD0iI0UwM0MzMSIgd2lkdGg9IjkwMCIgaGVpZ2h0PSIzMDAiLz4NCiAgPHBhdGggZmlsbD0iIzAwNzY0NyIgZD0iTTAgMHY2MDBsNDUwLTMwMHoiLz4NCiAgPHBhdGggZmlsbD0iI0ZGMkQyNyIgZD0iTTAgMHY2MDBsNDUwLTMwMHoiIHRyYW5zZm9ybT0ic2NhbGUoMC45KSB0cmFuc2xhdGUoMjUgMzMpIi8+DQogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0wIDB2NjAwbDQ1MC0zMDB6IiB0cmFuc2Zvcm09InNjYWxlKDAuOCkgdHJhbnNsYXRlKDUwIDY2KSIvPg0KICA8cGF0aCBmaWxsPSIjMDAwMDAwIiBkPSJNMCAwvjYwMGw0NTAtMDB6IiB0cmFuc2Zvcm09InNjYWxlKDAuNykgdHJhbnNsYXRlKDc1IDk5KSIvPg0KPC9zdmc+");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
-.font-roboto-slab {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Roboto Slab', serif;
 }
 
-/* --- Main Layout Structure --- */
+/* Overall app shell to ensure full height and internal scrolling */
 .app-shell {
-    height: 100vh;
-    width: 100vw;
-    display: flex; /* Using flex to hold the main container */
-}
-
-.main-container {
-    display: flex;
-    /* Width is 100% * number of sections */
-    width: 500%; /* 5 sections in index.html */
-    height: 100vh;
-    transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Elastic scroll effect */
-}
-
-.section {
-    width: 100vw; /* Each section takes full viewport width */
-    height: 100vh;
-    overflow-y: auto; /* Each section can scroll internally if needed */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 6rem 2rem 2rem; /* Add padding for content */
-    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+/* Main content area (excluding header/footer) that should scroll */
+.main-content-scrollable,.main-content-area {
+    flex-grow: 1; /* Allows it to take up available vertical space */
+    overflow-y: auto; /* Enables scrolling for the entire main content area */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 1rem; /* Overall padding */
+    background-color: rgba(16, 11, 33, 0.9); /* Deep indigo/purple background with transparency for flag */
+    color: #e5e7eb; /* Light text color for contrast */
+    max-width: 1200px; /* Consistent max width for content */
+    margin: 0 auto; /* Center content */
+}
+@media (min-width: 1024px) {
+   .main-content-scrollable,.main-content-area {
+        padding: 2rem; /* More padding for desktop */
+    }
+}
+
+/* Hero section specific styling - now consistent width */
+.hero-gradient,.hero-constitution,.hero-statutes,.hero-caselaw,.hero-updates {
+    background: linear-gradient(to bottom right, #4f46e5, #6366f1, #a5b4fc); /* Vibrant gradient from index.html */
     position: relative;
-}
-
-/* Hide scrollbar for sections for a cleaner look */
-.section::-webkit-scrollbar { display: none; }
-.section { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* --- Shared Header & Navigation --- */
-.nav-link {
-    padding: 0.5rem 1rem;
-    color: #9ca3af;
-    font-weight: 500;
-    border-radius: 9999px;
-    transition: all 0.3s;
-    text-decoration: none;
-    white-space: nowrap;
-}
-.nav-link:hover {
-    color: white;
-    background-color: #374151;
-}
-.nav-link.active {
-    color: white;
-    background-color: #4f46e5; /* Indigo */
-}
-
-/* --- Component Styles --- */
-.hero-gradient {
-    background: linear-gradient(135deg, #1e3a8a, #4f46e5);
-}
-
-.category-card {
-    background-color: #1f2937;
-    border: 1px solid #374151;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-.category-card:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-    border-color: #4f46e5;
-}
-
-.main-content {
-    overflow-y: auto;
-    height: 100vh;
-}
-
-.form-select, .form-input {
-    background-color: #1f2937;
-    border: 1px solid #4b5563;
-    color: white;
-}
-
-.form-select:focus, .form-input:focus {
-    outline: none;
-    --tw-ring-color: #4f46e5;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 2px var(--tw-ring-color);
-}
-
-/* --- Modal Styles --- */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    z-index: 100;
-    display: none; /* Hidden by default */
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-.modal-overlay.active {
-    display: flex;
-    opacity: 1;
-}
-.modal-content-container {
-    background-color: #111827;
-    border: 1px solid #374151;
-    max-width: 90vw;
-    width: 1024px;
-    height: 85vh;
-    display: flex;
     flex-direction: column;
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
+    text-align: center;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    color: #e5e7eb;
+    margin-bottom: 2rem;
+    z-index: 0; /* Ensure content is above SVG */
+    max-width: 1200px; /* Ensure consistent width */
+    margin-left: auto; /* Center hero section */
+    margin-right: auto; /* Center hero section */
 }
-.modal-overlay.active .modal-content-container {
-    transform: scale(1);
+.hero-gradient h1,.hero-constitution h1,.hero-statutes h1,.hero-caselaw h1,.hero-updates h1 {
+    font-size: 3rem;
+    line-height: 1.2;
+    z-index: 1;
 }
-.modal-body {
-    flex-grow: 1;
-    overflow-y: auto;
+@media (min-width: 768px) {
+   .hero-gradient h1,.hero-constitution h1,.hero-statutes h1,.hero-caselaw h1,.hero-updates h1 {
+        font-size: 4rem;
+    }
+}
+
+/* Hero SVG backgrounds (subtle, behind content) */
+.hero-constitution-svg,.hero-statutes-svg,.hero-caselaw-svg,.hero-updates-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Behind content */
+    opacity: 0.2; /* Subtle transparency */
+    filter: grayscale(100%) brightness(0.5); /* Desaturate and darken */
+}
+
+/* General section card styling */
+.section-card-dark {
+    background-color: rgba(30, 21, 59, 0.9); /* A slightly lighter indigo/purple for cards with transparency */
+    border-radius: 0.75rem;
     padding: 1.5rem;
-}
-.modal-body::-webkit-scrollbar { width: 8px; }
-.modal-body::-webkit-scrollbar-track { background: #111827; }
-.modal-body::-webkit-scrollbar-thumb { background-color: #374151; border-radius: 10px; }
-.modal-body::-webkit-scrollbar-thumb:hover { background-color: #4f46e5; }
-
-/* Chatbot specific modal styles */
-.chatbot-modal-content {
-     background-color: #1f2937;
-     color: #d1d5db;
-     border-radius: 0.5rem;
-     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-     max-width: 500px;
-     width: 90%;
-     max-height: 80vh;
-     display: flex;
-     flex-direction: column;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1.5rem;
+    border: 1px solid #4f46e5; /* Indigo-600 border for cards */
 }
 
-.message-bubble {
-    padding: 0.75rem 1rem;
-    border-radius: 1rem;
-    max-width: 80%;
+/* Buttons consistent with vibrant theme */
+.btn-vibrant-primary {
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition-colors duration-200;
 }
-.bot-message {
-    background-color: #374151;
-    align-self: flex-start;
-    border-bottom-left-radius: 0.25rem;
+.btn-vibrant-secondary {
+    @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg;
 }
-.user-message {
-    background-color: #4f46e5;
-    color: white;
-    align-self: flex-end;
-    border-bottom-right-radius: 0.25rem;
+.btn-indigo {
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-5 rounded-full transition-colors duration-200;
+}
+.btn-blue {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full transition-colors duration-200;
+}
+.print-button,.quiz-button,.pdf-button {
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full flex items-center justify-center transition-colors duration-200;
+}
+.quiz-button { @apply bg-green-600 hover:bg-green-700; }
+.pdf-button { @apply bg-blue-600 hover:bg-blue-700; }
+
+/* Input and Select fields */
+.input-dark,.select-dark {
+    @apply bg-indigo-900 text-white placeholder-indigo-300 border border-indigo-600 rounded-lg focus:ring-indigo-400 focus:border-indigo-400 p-2;
+}
+/* Fix for dropdown text color */
+.select-dark option {
+    background-color: #1e153b; /* Darker vibrant background for options */
+    color: #e5e7eb; /* Light text color for options */
 }
 
-/* Join the movement page specific styles */
-.flip-card { background-color: transparent; width: 100%; height: 220px; perspective: 1000px; }
-.flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.7s; transform-style: preserve-3d; }
-.flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
-.flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 0.75rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; border: 1px solid #4b5563; }
-.flip-card-front { background-color: #1f2937; }
-.flip-card-back { background-color: #4f46e5; color: white; transform: rotateY(180deg); }
+/* Index page specific styles */
+.search-input-index {
+    @apply w-full p-4 rounded-full bg-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition;
+}
+.search-button-index {
+    @apply absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-500 rounded-full h-12 w-12 flex items-center justify-center;
+}
+.index-info-card {
+    background-color: rgba(31, 41, 55, 0.7); /* Darker semi-transparent background */
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(55, 65, 81, 0.5); /* Semi-transparent border */
+}
+
+
+/* Constitution content display area */
+.constitution-content-display {
+    @apply bg-indigo-950 p-6 rounded-lg shadow-inner border border-indigo-800; /* Darker vibrant background */
+    min-height: 300px; /* Ensure it has some height */
+}
+.constitution-content-display h3 {
+    @apply text-xl font-semibold text-indigo-300 mt-6 mb-3;
+}
+.constitution-content-display p {
+    @apply text-indigo-100 mb-4 leading-relaxed;
+}
+.constitution-content-display ul {
+    @apply list-disc list-inside ml-4 text-indigo-100; /* Ensure list text is light */
+}
+.highlight {
+    @apply bg-yellow-400 text-gray-900 rounded px-1 font-semibold;
+}
+
+/* Document and Resource cards */
+.doc-card,.resource-card {
+    @apply bg-indigo-800 p-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 cursor-pointer flex flex-col;
+}
+.doc-card-image-placeholder,.resource-card-image-placeholder {
+    @apply w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col justify-center items-center text-indigo-400 text-6xl mb-3;
+    background-color: #312b61; /* Darker indigo shade */
+    border: 1px dashed #4f46e5; /* Indigo-600 border */
+}
+
+/* Vertical Timeline Styles */
+.vertical-timeline-container {
+    flex-grow: 1; /* Allow it to take available height */
+    background-color: rgba(30, 21, 59, 0.9); /* Darker vibrant background with transparency */
+    padding: 1.5rem 1rem;
+    overflow-y: auto; /* Allows internal scrolling */
+    border-left: 1px solid #4f46e5; /* Vibrant indigo border */
+    border-radius: 0.75rem; /* Consistent rounded corners */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    margin-top: 2rem; /* Spacing from the top of the grid cell */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.vertical-timeline-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.timeline-wrapper { position: relative; }
+.timeline-track {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-image: linear-gradient(to bottom, #4f46e5, #10b981, #ef4444, #f59e0b); /* Original vibrant gradient */
+}
+.timeline-point {
+    position: relative;
+    margin-bottom: 50px;
+    padding-left: 50px;
+    cursor: pointer;
+    z-index: 2; /* Ensure points are above the track */
+}
+.timeline-dot {
+    position: absolute;
+    left: 22px;
+    top: 5px;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background-color: #312b61; /* Darker indigo shade */
+    border: 3px solid #6366f1; /* Indigo-500 */
+    border-radius: 50%;
+    z-index: 3; /* Dot above track */
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.timeline-point:hover.timeline-dot {
+    transform: translateX(-50%) scale(1.3);
+    background-color: #818cf8; /* Indigo-300 on hover */
+    border-color: #818cf8;
+}
+.timeline-content.date {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 700;
+    color: #a5b4fc; /* Light indigo */
+}
+.timeline-content.event {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #e5e7eb; /* Light text */
+}
+
+/* Modal Styles (retained but colors adjusted for vibrant theme) */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center;
+    z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+    backdrop-filter: blur(5px);
+}
+.modal-overlay.visible { opacity: 1; visibility: visible; }
+.modal-content {
+    background-color: #1e153b; /* Vibrant dark card background */
+    color: #e5e7eb; padding: 2rem; border-radius: 8px;
+    width: 90%; max-width: 700px; max-height: 80vh; overflow-y: auto; position: relative;
+    transform: scale(0.9); transition: transform 0.3s; border: 1px solid #4f46e5; /* Vibrant indigo border */
+}
+.modal-overlay.visible.modal-content { transform: scale(1); }
+.modal-close {
+    position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; cursor: pointer;
+    color: #a5b4fc; transition: color 0.2s; /* Lighter indigo for close button */
+}
+.modal-close:hover { color: #818cf8; }
+
+/* Quiz Modal specific styles (colors adjusted for vibrant theme) */
+.quiz-modal-content {
+    background-color: #1e153b; /* Vibrant dark card background */
+    color: #e5e7eb; /* Light text */
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    border: 1px solid #4f46e5; /* Vibrant indigo border */
+}
+.quiz-option {
+    @apply bg-indigo-900 hover:bg-indigo-800 text-indigo-100 px-4 py-3 rounded-lg mb-2 text-left cursor-pointer transition-colors duration-200;
+}
+.quiz-option.selected {
+    @apply border-2 border-indigo-400;
+}
+.quiz-option.correct {
+    @apply bg-green-700 border-green-500;
+}
+.quiz-option.incorrect {
+    @apply bg-red-700 border-red-500;
+}
+
+/* Statutes and Case Law specific card styles */
+.document-card,.case-card,.update-card {
+    @apply bg-indigo-800 p-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors duration-200 flex flex-col;
+}
+.document-card.icon,.case-card.icon {
+    @apply text-5xl mb-3 text-blue-400; /* Consistent icon color */
+}
+.case-card.icon {
+    @apply text-purple-400; /* Specific color for case law icons */
+}
+.document-card a,.case-card a,.update-card a {
+    @apply text-indigo-400 hover:underline mt-4 block;
+}
+.select-dark option {
+    background-color: #1e153b; /* Darker vibrant background for options */
+    color: #e5e7eb; /* Light text color for options */
+}
+.update-card.date {
+    @apply text-sm text-indigo-200 mb-2;
+}
+.update-card.tag {
+    @apply bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded-full;
+}
+
+/* Desktop two-column grid for Constitution page */
+.desktop-two-column-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 1.5rem;
+    max-width: 1200px; /* Max width for content */
+    margin: 0 auto; /* Center content */
+}
+@media (min-width: 1024px) {
+   .desktop-two-column-grid {
+        grid-template-columns: 2.5fr 1.5fr; /* Content and Timeline */
+    }
+}
